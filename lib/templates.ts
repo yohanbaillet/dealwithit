@@ -35,6 +35,9 @@ export const POPULAR_TEMPLATE_KEYS = [
   'lost_parcel',
   'invoice_dispute',
   'insurance_home_cancel',
+  'parking_fine',
+  'streaming_cancel',
+  'defective_product',
 ]
 
 export const TEMPLATES: Template[] = [
