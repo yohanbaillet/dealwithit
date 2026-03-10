@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { submitAnswers } from '@/actions/clarify'
 import { extractFromDocumentForClarify } from '@/actions/upload'
 import { getTemplate } from '@/lib/templates'
@@ -35,6 +35,7 @@ interface Props {
 export function ClarificationForm({ requestId, questions, templateKey }: Props) {
   const t = useTranslations('form')
   const tFields = useTranslations('fields')
+  const locale = useLocale()
   const [loading, setLoading] = useState(false)
   const [scanning, setScanning] = useState(false)
   const [scanProgress, setScanProgress] = useState(0)
@@ -45,12 +46,14 @@ export function ClarificationForm({ requestId, questions, templateKey }: Props) 
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Build field options map from template definition
+  // Build field options map from template definition, locale-aware
   const template = templateKey ? getTemplate(templateKey) : null
   const fieldOptionsMap: Record<string, string[]> = {}
   if (template) {
     for (const f of template.fields) {
-      if (f.companyOptions) fieldOptionsMap[f.key] = f.companyOptions
+      if (f.companyOptionsByLocale) {
+        fieldOptionsMap[f.key] = f.companyOptionsByLocale[locale] ?? f.companyOptionsByLocale['fr'] ?? []
+      }
     }
   }
 
