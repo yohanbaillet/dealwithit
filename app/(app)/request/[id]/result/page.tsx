@@ -8,6 +8,7 @@ import { NextStepsCard } from '@/components/letter/NextStepsCard'
 import { getNextSteps } from '@/lib/ai/generate'
 import Link from 'next/link'
 import { ArrowLeft, CheckCircle } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -18,6 +19,8 @@ export default async function ResultPage({ params }: Props) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return notFound()
+
+  const t = await getTranslations('result')
 
   const { data: request } = await supabase
     .from('requests')
@@ -81,7 +84,7 @@ export default async function ResultPage({ params }: Props) {
         className="mb-8 inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600"
       >
         <ArrowLeft className="h-3.5 w-3.5" />
-        Tableau de bord
+        {t('back')}
       </Link>
 
       {/* Success header */}
@@ -90,10 +93,8 @@ export default async function ResultPage({ params }: Props) {
           <CheckCircle className="h-5 w-5 text-green-600" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Votre lettre est prête</h1>
-          <p className="mt-0.5 text-gray-500">
-            Relisez, modifiez si besoin, puis téléchargez ou copiez
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="mt-0.5 text-gray-500">{t('subtitle')}</p>
         </div>
       </div>
 
@@ -104,8 +105,8 @@ export default async function ResultPage({ params }: Props) {
 
       {/* Disclaimer */}
       <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-        ⚠️ Brouillon généré à partir de votre situation. <strong>Relisez attentivement avant d'envoyer.</strong>
-        Ce document n'est pas un conseil juridique.
+        ⚠️ {t('disclaimerText')} <strong>{t('disclaimerBold')}</strong>{' '}
+        {t('disclaimerLegal')}
       </div>
 
       <div className="space-y-6">

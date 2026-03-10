@@ -1,0 +1,160 @@
+{
+  "landing": {
+    "hero": {
+      "title": "La tua lettera amministrativa",
+      "titleHighlight": "in pochi secondi.",
+      "subtitle": "Scegli la tua situazione — o importa un documento per compilare tutto automaticamente.",
+      "uploadCta": "Importa una foto o documento",
+      "uploadSubtitle": "Fattura, contratto, lettera — compiliamo tutto automaticamente",
+      "divider": "o scegli un caso",
+      "searchPlaceholder": "Cerca una situazione...",
+      "showMore": "Vedi più situazioni ({count})",
+      "showLess": "Vedi meno",
+      "noResults": "Nessun risultato",
+      "noResultsHint": "Prova un'altra parola chiave o filtro",
+      "reset": "Reimposta",
+      "useTemplate": "Usa questo modello",
+      "loading": "Preparazione..."
+    },
+    "filters": {
+      "all": "Tutti",
+      "terminate": "Disdetta",
+      "contest": "Contestazione",
+      "complain": "Reclamo",
+      "request": "Rimborso"
+    },
+    "trust": {
+      "item1Title": "Bozza da rivedere",
+      "item1Desc": "Ogni lettera è presentata come una bozza da verificare prima dell'invio",
+      "item2Title": "Dati protetti",
+      "item2Desc": "Le tue informazioni sono crittografate e non vengono mai condivise",
+      "item3Title": "6 paesi coperti",
+      "item3Desc": "Francia, Germania, Regno Unito, Spagna, Italia, Stati Uniti",
+      "disclaimer": "dealWithIt genera bozze amministrative a scopo informativo. Questo servizio non costituisce una consulenza legale. Rileggi sempre le tue lettere prima di inviarle."
+    }
+  },
+  "nav": {
+    "myLetters": "Le mie lettere",
+    "login": "Accedi",
+    "signup": "Inizia",
+    "logout": "Esci"
+  },
+  "footer": {
+    "copyright": "© {year} dealWithIt · Le tue lettere amministrative semplificate"
+  },
+  "intents": {
+    "terminate": "Disdetta",
+    "contest": "Contestazione",
+    "complain": "Reclamo",
+    "request": "Rimborso",
+    "certify": "Attestato"
+  },
+  "templates": {
+    "gym_cancel": "Disdire l'abbonamento in palestra",
+    "phone_cancel": "Disdire il contratto telefonico",
+    "radar_fine": "Contestare una multa autovelox",
+    "lost_parcel": "Reclamare per pacco perso o non consegnato",
+    "invoice_dispute": "Contestare una fattura errata",
+    "insurance_home_cancel": "Disdire l'assicurazione casa",
+    "parking_fine": "Contestare una multa per sosta",
+    "transport_complaint": "Richiedere un risarcimento trasporto",
+    "box_cancel": "Disdire internet / TV",
+    "insurance_car_cancel": "Disdire l'assicurazione auto",
+    "streaming_cancel": "Disdire un abbonamento streaming",
+    "health_cancel": "Disdire l'assicurazione sanitaria",
+    "bank_dispute": "Contestare addebiti bancari ingiustificati",
+    "defective_product": "Reclamare per un prodotto difettoso",
+    "service_complaint": "Lamentarsi di un servizio insoddisfacente",
+    "refund_request": "Richiedere un rimborso"
+  },
+  "fields": {
+    "sender_name": "Il tuo nome completo",
+    "sender_address": "Il tuo indirizzo postale completo",
+    "company_name": "Nome dell'azienda / organizzazione",
+    "contract_number": "Numero contratto / cliente",
+    "termination_date": "Data di disdetta desiderata",
+    "fine_reference": "Numero di riferimento della multa",
+    "offense_date": "Data dell'infrazione",
+    "vehicle_plate": "Targa del veicolo",
+    "offense_city": "Città / luogo dell'infrazione",
+    "fine_amount": "Importo della multa",
+    "contest_reason": "Motivo della contestazione",
+    "complaint_description": "Descrizione del reclamo",
+    "expected_resolution": "Risoluzione attesa",
+    "request_details": "Dettagli della richiesta"
+  },
+  "dashboard": {
+    "greeting": "Ciao, {name} 👋",
+    "title": "Le mie lettere",
+    "requestCount": "{count, plural, =0 {Nessuna richiesta} one {# richiesta} other {# richieste}}",
+    "newLetter": "Nuova lettera",
+    "emptyTitle": "Non hai ancora nessuna lettera",
+    "emptySubtitle": "Descrivi la tua situazione per generare la tua prima lettera",
+    "emptyAction": "Inizia",
+    "untitled": "Richiesta senza titolo",
+    "status": {
+      "draft": "Bozza",
+      "clarifying": "In corso",
+      "generating": "Generazione...",
+      "complete": "Completata"
+    }
+  },
+  "clarify": {
+    "back": "Indietro",
+    "step": "Passo 2 di 3",
+    "title": "Verifica le informazioni",
+    "subtitle": "Abbiamo estratto quello che potevamo — completa i campi mancanti"
+  },
+  "upload": {
+    "back": "Indietro",
+    "title": "Importa il tuo documento",
+    "subtitle": "Foto, scansione o PDF — estraiamo le informazioni automaticamente",
+    "dragDrop": "Trascina un file qui o clicca per scegliere",
+    "formats": "JPG, PNG, PDF · Max 10 MB",
+    "intentLabel": "Cosa vuoi fare con questo documento?",
+    "intentHint": "(opzionale — lo rileveremo altrimenti)",
+    "extractedText": "Testo estratto dal documento",
+    "analyzing": "Analisi del documento...",
+    "analyze": "Analizza documento →",
+    "fileTooLarge": "File troppo grande (max 10 MB)",
+    "selectFile": "Seleziona un file"
+  },
+  "form": {
+    "photoTitle": "Compila da una foto",
+    "dragDrop": "Trascina il tuo documento o",
+    "clickToChoose": "clicca per scegliere",
+    "formats": "JPG · PNG · HEIC · PDF",
+    "analyzing": "Analisi...",
+    "analyze": "Analizza →",
+    "autoFilled": "Compilato automaticamente",
+    "autoFilledCount": "{count, plural, one {# campo compilato automaticamente} other {# campi compilati automaticamente}}",
+    "autoFilledVerify": "{count, plural, one {# campo compilato} other {# campi compilati}} — verifica prima di continuare",
+    "noExtraction": "Nessuna informazione estratta — compila i campi manualmente.",
+    "allExtracted": "Tutte le informazioni sono state estratte automaticamente.",
+    "generateLetter": "Genera la mia lettera →",
+    "generating": "Generazione della lettera...",
+    "disclaimer": "Puoi modificare la lettera prima di scaricarla",
+    "placeholder": "La tua risposta...",
+    "unsupportedFormat": "Formato non supportato. Usa un'immagine o un PDF.",
+    "requiredField": "Rispondere a: \"{question}\"",
+    "scanStep0": "Lettura del documento...",
+    "scanStep1": "Ricerca delle informazioni...",
+    "scanStep2": "Elaborazione in corso...",
+    "scanStep3": "Un po' di magia...",
+    "scanStep4": "Quasi pronto!"
+  },
+  "templateBanner": {
+    "autoDetected": "rilevato automaticamente",
+    "noTemplate": "Nessun modello selezionato",
+    "change": "Cambia",
+    "chooseTemplate": "Scegli un modello"
+  },
+  "result": {
+    "back": "Dashboard",
+    "title": "La tua lettera è pronta",
+    "subtitle": "Rivedi, modifica se necessario, poi scarica o copia",
+    "disclaimerText": "Bozza generata dalla tua situazione.",
+    "disclaimerBold": "Leggi attentamente prima di inviare.",
+    "disclaimerLegal": "Questo documento non costituisce consulenza legale."
+  }
+}

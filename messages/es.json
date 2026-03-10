@@ -1,0 +1,160 @@
+{
+  "landing": {
+    "hero": {
+      "title": "Su carta administrativa",
+      "titleHighlight": "en segundos.",
+      "subtitle": "Elija su situación — o importe un documento para rellenarlo todo automáticamente.",
+      "uploadCta": "Importar una foto o documento",
+      "uploadSubtitle": "Factura, contrato, carta — lo rellenamos todo automáticamente",
+      "divider": "o elija un caso",
+      "searchPlaceholder": "Buscar una situación...",
+      "showMore": "Ver más situaciones ({count})",
+      "showLess": "Ver menos",
+      "noResults": "Sin resultados",
+      "noResultsHint": "Pruebe otra palabra clave o filtro",
+      "reset": "Restablecer",
+      "useTemplate": "Usar esta plantilla",
+      "loading": "Preparando..."
+    },
+    "filters": {
+      "all": "Todos",
+      "terminate": "Cancelación",
+      "contest": "Disputa",
+      "complain": "Reclamación",
+      "request": "Reembolso"
+    },
+    "trust": {
+      "item1Title": "Borrador a revisar",
+      "item1Desc": "Cada carta se presenta como un borrador a verificar antes de enviar",
+      "item2Title": "Datos protegidos",
+      "item2Desc": "Su información está cifrada y nunca se comparte",
+      "item3Title": "6 países cubiertos",
+      "item3Desc": "Francia, Alemania, Reino Unido, España, Italia, Estados Unidos",
+      "disclaimer": "dealWithIt genera borradores administrativos con fines informativos. Este servicio no constituye asesoramiento jurídico. Revise siempre sus cartas antes de enviarlas."
+    }
+  },
+  "nav": {
+    "myLetters": "Mis cartas",
+    "login": "Iniciar sesión",
+    "signup": "Empezar",
+    "logout": "Cerrar sesión"
+  },
+  "footer": {
+    "copyright": "© {year} dealWithIt · Sus cartas administrativas simplificadas"
+  },
+  "intents": {
+    "terminate": "Cancelación",
+    "contest": "Disputa",
+    "complain": "Reclamación",
+    "request": "Reembolso",
+    "certify": "Certificado"
+  },
+  "templates": {
+    "gym_cancel": "Cancelar membresía del gimnasio",
+    "phone_cancel": "Cancelar contrato de teléfono",
+    "radar_fine": "Impugnar multa de radar",
+    "lost_parcel": "Reclamar paquete perdido o no entregado",
+    "invoice_dispute": "Disputar factura incorrecta",
+    "insurance_home_cancel": "Cancelar seguro del hogar",
+    "parking_fine": "Impugnar multa de estacionamiento",
+    "transport_complaint": "Reclamar compensación por transporte",
+    "box_cancel": "Cancelar internet / TV",
+    "insurance_car_cancel": "Cancelar seguro de auto",
+    "streaming_cancel": "Cancelar suscripción de streaming",
+    "health_cancel": "Cancelar seguro médico",
+    "bank_dispute": "Disputar cargos bancarios injustificados",
+    "defective_product": "Reclamar por producto defectuoso",
+    "service_complaint": "Quejarse por servicio insatisfactorio",
+    "refund_request": "Solicitar un reembolso"
+  },
+  "fields": {
+    "sender_name": "Su nombre completo",
+    "sender_address": "Su dirección postal completa",
+    "company_name": "Nombre de empresa / organización",
+    "contract_number": "Número de contrato / cliente",
+    "termination_date": "Fecha de cancelación deseada",
+    "fine_reference": "Número de referencia de la multa",
+    "offense_date": "Fecha de la infracción",
+    "vehicle_plate": "Matrícula del vehículo",
+    "offense_city": "Ciudad / lugar de la infracción",
+    "fine_amount": "Importe de la multa",
+    "contest_reason": "Motivo de la disputa",
+    "complaint_description": "Descripción de la reclamación",
+    "expected_resolution": "Resolución esperada",
+    "request_details": "Detalles de la solicitud"
+  },
+  "dashboard": {
+    "greeting": "Hola, {name} 👋",
+    "title": "Mis cartas",
+    "requestCount": "{count, plural, =0 {Sin solicitudes} one {# solicitud} other {# solicitudes}}",
+    "newLetter": "Nueva carta",
+    "emptyTitle": "Aún no tiene ninguna carta",
+    "emptySubtitle": "Describa su situación para generar su primera carta",
+    "emptyAction": "Empezar",
+    "untitled": "Solicitud sin título",
+    "status": {
+      "draft": "Borrador",
+      "clarifying": "En curso",
+      "generating": "Generando...",
+      "complete": "Completada"
+    }
+  },
+  "clarify": {
+    "back": "Volver",
+    "step": "Paso 2 de 3",
+    "title": "Verificar la información",
+    "subtitle": "Extrajimos lo que pudimos — complete los campos que faltan"
+  },
+  "upload": {
+    "back": "Volver",
+    "title": "Importar su documento",
+    "subtitle": "Foto, escaneo o PDF — extraemos la información automáticamente",
+    "dragDrop": "Arrastre un archivo aquí o haga clic para elegir",
+    "formats": "JPG, PNG, PDF · Máx 10 MB",
+    "intentLabel": "¿Qué desea hacer con este documento?",
+    "intentHint": "(opcional — lo detectaremos si no)",
+    "extractedText": "Texto extraído del documento",
+    "analyzing": "Analizando documento...",
+    "analyze": "Analizar documento →",
+    "fileTooLarge": "Archivo demasiado grande (máx. 10 MB)",
+    "selectFile": "Por favor seleccione un archivo"
+  },
+  "form": {
+    "photoTitle": "Rellenar desde una foto",
+    "dragDrop": "Arrastre su documento o",
+    "clickToChoose": "haga clic para elegir",
+    "formats": "JPG · PNG · HEIC · PDF",
+    "analyzing": "Analizando...",
+    "analyze": "Analizar →",
+    "autoFilled": "Autocompletado",
+    "autoFilledCount": "{count, plural, one {# campo rellenado automáticamente} other {# campos rellenados automáticamente}}",
+    "autoFilledVerify": "{count, plural, one {# campo rellenado} other {# campos rellenados}} — verifique antes de continuar",
+    "noExtraction": "No se extrajo información — rellene los campos manualmente.",
+    "allExtracted": "Toda la información fue extraída automáticamente.",
+    "generateLetter": "Generar mi carta →",
+    "generating": "Generando carta...",
+    "disclaimer": "Puede editar la carta antes de descargarla",
+    "placeholder": "Su respuesta...",
+    "unsupportedFormat": "Formato no compatible. Use una imagen o PDF.",
+    "requiredField": "Por favor responda: \"{question}\"",
+    "scanStep0": "Leyendo el documento...",
+    "scanStep1": "Buscando los datos importantes...",
+    "scanStep2": "Procesando todo...",
+    "scanStep3": "Un poco de magia administrativa...",
+    "scanStep4": "¡Casi listo!"
+  },
+  "templateBanner": {
+    "autoDetected": "detectado automáticamente",
+    "noTemplate": "Ninguna plantilla seleccionada",
+    "change": "Cambiar",
+    "chooseTemplate": "Elegir una plantilla"
+  },
+  "result": {
+    "back": "Panel de control",
+    "title": "Su carta está lista",
+    "subtitle": "Revise, edite si es necesario, luego descargue o copie",
+    "disclaimerText": "Borrador generado a partir de su situación.",
+    "disclaimerBold": "Lea atentamente antes de enviar.",
+    "disclaimerLegal": "Este documento no constituye asesoramiento jurídico."
+  }
+}

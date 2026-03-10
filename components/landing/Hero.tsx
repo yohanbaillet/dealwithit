@@ -1,8 +1,22 @@
-import Link from 'next/link'
+'use client'
+
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Camera } from 'lucide-react'
+import { ArrowRight, Camera, Loader2 } from 'lucide-react'
+import { createUploadRequest } from '@/actions/request'
 
 export function Hero() {
+  const [uploading, setUploading] = useState(false)
+
+  const handleUpload = async () => {
+    setUploading(true)
+    try {
+      await createUploadRequest()
+    } catch {
+      setUploading(false)
+    }
+  }
+
   return (
     <section className="px-4 pb-16 pt-20 text-center md:pb-24 md:pt-28">
       <div className="mx-auto max-w-2xl">
@@ -22,25 +36,29 @@ export function Hero() {
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Link href="/request/new" className="w-full sm:w-auto">
+          <a href="#templates" className="w-full sm:w-auto">
             <Button
               size="lg"
               className="w-full gap-2 bg-gray-900 px-8 py-6 text-base hover:bg-gray-800 sm:w-auto"
             >
-              Je décris ma situation
+              Je choisis mon cas
               <ArrowRight className="h-4 w-4" />
             </Button>
-          </Link>
-          <Link href="/request/new?mode=upload" className="w-full sm:w-auto">
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full gap-2 px-8 py-6 text-base sm:w-auto"
-            >
+          </a>
+          <Button
+            size="lg"
+            variant="outline"
+            disabled={uploading}
+            onClick={handleUpload}
+            className="w-full gap-2 px-8 py-6 text-base sm:w-auto"
+          >
+            {uploading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
               <Camera className="h-4 w-4" />
-              Je prends un document en photo
-            </Button>
-          </Link>
+            )}
+            J'importe un document
+          </Button>
         </div>
 
         <p className="mt-6 text-sm text-gray-400">

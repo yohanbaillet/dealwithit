@@ -1,24 +1,27 @@
 import { Shield, FileCheck, Globe } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
-const TRUST_ITEMS = [
-  {
-    icon: FileCheck,
-    title: 'Brouillon à relire',
-    description: 'Chaque lettre est présentée comme un brouillon à vérifier avant envoi',
-  },
-  {
-    icon: Shield,
-    title: 'Données protégées',
-    description: 'Vos informations sont chiffrées et ne sont jamais partagées',
-  },
-  {
-    icon: Globe,
-    title: '6 pays couverts',
-    description: 'France, Allemagne, Royaume-Uni, Espagne, Italie, États-Unis',
-  },
-]
+export async function TrustBanner() {
+  const t = await getTranslations('landing.trust')
 
-export function TrustBanner() {
+  const TRUST_ITEMS = [
+    {
+      icon: FileCheck,
+      title: t('item1Title'),
+      description: t('item1Desc'),
+    },
+    {
+      icon: Shield,
+      title: t('item2Title'),
+      description: t('item2Desc'),
+    },
+    {
+      icon: Globe,
+      title: t('item3Title'),
+      description: t('item3Desc'),
+    },
+  ]
+
   return (
     <section className="border-t border-gray-100 bg-gray-50 px-4 py-16">
       <div className="mx-auto max-w-4xl">
@@ -36,8 +39,7 @@ export function TrustBanner() {
 
         <div className="mt-12 rounded-xl border border-amber-200 bg-amber-50 px-6 py-4 text-center">
           <p className="text-sm text-amber-800">
-            ⚠️ <strong>dealWithIt</strong> génère des brouillons administratifs à titre indicatif.
-            Ce service ne constitue pas un conseil juridique. Relisez toujours vos lettres avant envoi.
+            ⚠️ <strong>dealWithIt</strong> {t('disclaimer')}
           </p>
         </div>
       </div>

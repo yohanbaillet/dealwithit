@@ -1,0 +1,160 @@
+{
+  "landing": {
+    "hero": {
+      "title": "Votre lettre administrative",
+      "titleHighlight": "en quelques secondes.",
+      "subtitle": "Choisissez votre situation — ou importez un document pour tout remplir automatiquement.",
+      "uploadCta": "Importer une photo ou un document",
+      "uploadSubtitle": "Facture, contrat, courrier — on remplit tout automatiquement",
+      "divider": "ou choisissez un cas",
+      "searchPlaceholder": "Rechercher une situation...",
+      "showMore": "Voir plus de situations ({count})",
+      "showLess": "Voir moins",
+      "noResults": "Aucun résultat",
+      "noResultsHint": "Essayez un autre mot-clé ou filtre",
+      "reset": "Réinitialiser",
+      "useTemplate": "Utiliser ce modèle",
+      "loading": "Préparation..."
+    },
+    "filters": {
+      "all": "Tous",
+      "terminate": "Résiliation",
+      "contest": "Contestation",
+      "complain": "Réclamation",
+      "request": "Remboursement"
+    },
+    "trust": {
+      "item1Title": "Brouillon à relire",
+      "item1Desc": "Chaque lettre est présentée comme un brouillon à vérifier avant envoi",
+      "item2Title": "Données protégées",
+      "item2Desc": "Vos informations sont chiffrées et ne sont jamais partagées",
+      "item3Title": "6 pays couverts",
+      "item3Desc": "France, Allemagne, Royaume-Uni, Espagne, Italie, États-Unis",
+      "disclaimer": "dealWithIt génère des brouillons administratifs à titre indicatif. Ce service ne constitue pas un conseil juridique. Relisez toujours vos lettres avant envoi."
+    }
+  },
+  "nav": {
+    "myLetters": "Mes lettres",
+    "login": "Connexion",
+    "signup": "Commencer",
+    "logout": "Déconnexion"
+  },
+  "footer": {
+    "copyright": "© {year} dealWithIt · Vos lettres administratives simplifiées"
+  },
+  "intents": {
+    "terminate": "Résiliation",
+    "contest": "Contestation",
+    "complain": "Réclamation",
+    "request": "Remboursement",
+    "certify": "Attestation"
+  },
+  "templates": {
+    "gym_cancel": "Résilier mon abonnement salle de sport",
+    "phone_cancel": "Résilier mon abonnement téléphonique",
+    "radar_fine": "Contester un avis de contravention radar",
+    "lost_parcel": "Réclamer un colis perdu ou non livré",
+    "invoice_dispute": "Contester une facture erronée",
+    "insurance_home_cancel": "Résilier mon assurance habitation",
+    "parking_fine": "Contester un forfait post-stationnement",
+    "transport_complaint": "Réclamer une compensation transport",
+    "box_cancel": "Résilier ma box internet / TV",
+    "insurance_car_cancel": "Résilier mon assurance auto",
+    "streaming_cancel": "Résilier un abonnement streaming",
+    "health_cancel": "Résilier ma mutuelle santé",
+    "bank_dispute": "Contester des frais bancaires",
+    "defective_product": "Réclamer pour un produit défectueux",
+    "service_complaint": "Se plaindre d'un service insatisfaisant",
+    "refund_request": "Demander un remboursement"
+  },
+  "fields": {
+    "sender_name": "Votre nom complet",
+    "sender_address": "Votre adresse postale complète",
+    "company_name": "Nom de l'entreprise / organisme",
+    "contract_number": "Numéro de contrat / client",
+    "termination_date": "Date de résiliation souhaitée",
+    "fine_reference": "Numéro de l'avis de contravention",
+    "offense_date": "Date de l'infraction",
+    "vehicle_plate": "Plaque d'immatriculation",
+    "offense_city": "Ville / lieu de l'infraction",
+    "fine_amount": "Montant de l'amende",
+    "contest_reason": "Motif de contestation",
+    "complaint_description": "Description de la réclamation",
+    "expected_resolution": "Résolution souhaitée",
+    "request_details": "Détails de la demande"
+  },
+  "dashboard": {
+    "greeting": "Bonjour, {name} 👋",
+    "title": "Mes lettres",
+    "requestCount": "{count, plural, =0 {Aucune demande} one {# demande} other {# demandes}}",
+    "newLetter": "Nouvelle lettre",
+    "emptyTitle": "Vous n'avez encore aucune lettre",
+    "emptySubtitle": "Décrivez votre situation pour générer votre première lettre",
+    "emptyAction": "Commencer",
+    "untitled": "Demande sans titre",
+    "status": {
+      "draft": "Brouillon",
+      "clarifying": "En cours",
+      "generating": "Génération...",
+      "complete": "Terminée"
+    }
+  },
+  "clarify": {
+    "back": "Retour",
+    "step": "Étape 2 sur 3",
+    "title": "Vérifiez les informations",
+    "subtitle": "On a extrait ce qu'on a pu — complétez les champs manquants"
+  },
+  "upload": {
+    "back": "Retour",
+    "title": "Importez votre document",
+    "subtitle": "Photo, scan ou PDF — on extrait les informations automatiquement",
+    "dragDrop": "Glissez un fichier ici ou cliquez pour choisir",
+    "formats": "JPG, PNG, PDF · Max 10 Mo",
+    "intentLabel": "Que voulez-vous faire avec ce document ?",
+    "intentHint": "(optionnel — on détectera sinon)",
+    "extractedText": "Texte extrait du document",
+    "analyzing": "Analyse du document...",
+    "analyze": "Analyser le document →",
+    "fileTooLarge": "Fichier trop volumineux (max 10 Mo)",
+    "selectFile": "Veuillez sélectionner un fichier"
+  },
+  "form": {
+    "photoTitle": "Remplir depuis une photo",
+    "dragDrop": "Glissez votre document ou",
+    "clickToChoose": "cliquez pour choisir",
+    "formats": "JPG · PNG · HEIC · PDF",
+    "analyzing": "Analyse...",
+    "analyze": "Analyser →",
+    "autoFilled": "Auto-rempli",
+    "autoFilledCount": "{count, plural, one {# champ rempli automatiquement} other {# champs remplis automatiquement}}",
+    "autoFilledVerify": "{count, plural, one {# champ rempli} other {# champs remplis}} — vérifiez avant de continuer",
+    "noExtraction": "Aucune information extraite — remplissez les champs manuellement.",
+    "allExtracted": "Toutes les informations ont été extraites automatiquement.",
+    "generateLetter": "Générer ma lettre →",
+    "generating": "Génération de la lettre...",
+    "disclaimer": "Vous pourrez modifier la lettre avant de la télécharger",
+    "placeholder": "Votre réponse...",
+    "unsupportedFormat": "Format non supporté. Utilisez une image ou un PDF.",
+    "requiredField": "Veuillez répondre : \"{question}\"",
+    "scanStep0": "Lecture du document...",
+    "scanStep1": "Repérage des infos clés...",
+    "scanStep2": "Déchiffrage en cours...",
+    "scanStep3": "Magie administrative...",
+    "scanStep4": "Presque prêt !"
+  },
+  "templateBanner": {
+    "autoDetected": "détecté automatiquement",
+    "noTemplate": "Aucun modèle sélectionné",
+    "change": "Changer",
+    "chooseTemplate": "Choisissez un modèle"
+  },
+  "result": {
+    "back": "Tableau de bord",
+    "title": "Votre lettre est prête",
+    "subtitle": "Relisez, modifiez si besoin, puis téléchargez ou copiez",
+    "disclaimerText": "Brouillon généré à partir de votre situation.",
+    "disclaimerBold": "Relisez attentivement avant d'envoyer.",
+    "disclaimerLegal": "Ce document n'est pas un conseil juridique."
+  }
+}

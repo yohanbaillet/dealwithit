@@ -1,0 +1,160 @@
+{
+  "landing": {
+    "hero": {
+      "title": "Ihr Verwaltungsbrief",
+      "titleHighlight": "in Sekunden.",
+      "subtitle": "Wählen Sie Ihre Situation — oder importieren Sie ein Dokument, um alles automatisch auszufüllen.",
+      "uploadCta": "Foto oder Dokument importieren",
+      "uploadSubtitle": "Rechnung, Vertrag, Schreiben — wir füllen alles automatisch aus",
+      "divider": "oder wählen Sie einen Fall",
+      "searchPlaceholder": "Situation suchen...",
+      "showMore": "Mehr Situationen anzeigen ({count})",
+      "showLess": "Weniger anzeigen",
+      "noResults": "Keine Ergebnisse",
+      "noResultsHint": "Versuchen Sie ein anderes Stichwort oder Filter",
+      "reset": "Zurücksetzen",
+      "useTemplate": "Diese Vorlage verwenden",
+      "loading": "Vorbereitung..."
+    },
+    "filters": {
+      "all": "Alle",
+      "terminate": "Kündigung",
+      "contest": "Einspruch",
+      "complain": "Beschwerde",
+      "request": "Erstattung"
+    },
+    "trust": {
+      "item1Title": "Entwurf zum Prüfen",
+      "item1Desc": "Jeder Brief wird als Entwurf präsentiert, der vor dem Versenden überprüft werden soll",
+      "item2Title": "Daten geschützt",
+      "item2Desc": "Ihre Informationen sind verschlüsselt und werden niemals weitergegeben",
+      "item3Title": "6 Länder abgedeckt",
+      "item3Desc": "Frankreich, Deutschland, Vereinigtes Königreich, Spanien, Italien, USA",
+      "disclaimer": "dealWithIt erstellt administrative Entwürfe zu Informationszwecken. Dieser Dienst stellt keine Rechtsberatung dar. Lesen Sie Ihre Briefe immer vor dem Versenden durch."
+    }
+  },
+  "nav": {
+    "myLetters": "Meine Briefe",
+    "login": "Anmelden",
+    "signup": "Loslegen",
+    "logout": "Abmelden"
+  },
+  "footer": {
+    "copyright": "© {year} dealWithIt · Ihre Verwaltungsbriefe vereinfacht"
+  },
+  "intents": {
+    "terminate": "Kündigung",
+    "contest": "Einspruch",
+    "complain": "Beschwerde",
+    "request": "Erstattung",
+    "certify": "Bescheinigung"
+  },
+  "templates": {
+    "gym_cancel": "Fitnessstudio-Mitgliedschaft kündigen",
+    "phone_cancel": "Handyvertrag kündigen",
+    "radar_fine": "Blitzerfoto anfechten",
+    "lost_parcel": "Verlustmeldung für Paket",
+    "invoice_dispute": "Fehlerhafte Rechnung anfechten",
+    "insurance_home_cancel": "Hausratversicherung kündigen",
+    "parking_fine": "Parkknöllchen anfechten",
+    "transport_complaint": "Entschädigung für Verspätung",
+    "box_cancel": "Internet-/TV-Vertrag kündigen",
+    "insurance_car_cancel": "Kfz-Versicherung kündigen",
+    "streaming_cancel": "Streaming-Abo kündigen",
+    "health_cancel": "Krankenversicherung kündigen",
+    "bank_dispute": "Ungerechtfertigte Bankgebühren anfechten",
+    "defective_product": "Defektes Produkt reklamieren",
+    "service_complaint": "Unzufriedenheit mit Dienstleistung melden",
+    "refund_request": "Rückerstattung beantragen"
+  },
+  "fields": {
+    "sender_name": "Ihr vollständiger Name",
+    "sender_address": "Ihre vollständige Postanschrift",
+    "company_name": "Unternehmen / Organisation",
+    "contract_number": "Vertrags- / Kundennummer",
+    "termination_date": "Gewünschtes Kündigungsdatum",
+    "fine_reference": "Aktenzeichen des Bußgeldbescheids",
+    "offense_date": "Datum des Verstoßes",
+    "vehicle_plate": "Kfz-Kennzeichen",
+    "offense_city": "Ort des Verstoßes",
+    "fine_amount": "Bußgeldbetrag",
+    "contest_reason": "Begründung des Einspruchs",
+    "complaint_description": "Beschreibung der Beschwerde",
+    "expected_resolution": "Gewünschte Lösung",
+    "request_details": "Angaben zur Anfrage"
+  },
+  "dashboard": {
+    "greeting": "Hallo, {name} 👋",
+    "title": "Meine Briefe",
+    "requestCount": "{count, plural, =0 {Keine Anfragen} one {# Anfrage} other {# Anfragen}}",
+    "newLetter": "Neuer Brief",
+    "emptyTitle": "Sie haben noch keine Briefe",
+    "emptySubtitle": "Beschreiben Sie Ihre Situation, um Ihren ersten Brief zu erstellen",
+    "emptyAction": "Loslegen",
+    "untitled": "Unbenannte Anfrage",
+    "status": {
+      "draft": "Entwurf",
+      "clarifying": "In Bearbeitung",
+      "generating": "Wird erstellt...",
+      "complete": "Abgeschlossen"
+    }
+  },
+  "clarify": {
+    "back": "Zurück",
+    "step": "Schritt 2 von 3",
+    "title": "Informationen überprüfen",
+    "subtitle": "Wir haben extrahiert, was wir konnten — vervollständigen Sie die fehlenden Felder"
+  },
+  "upload": {
+    "back": "Zurück",
+    "title": "Dokument importieren",
+    "subtitle": "Foto, Scan oder PDF — wir extrahieren die Informationen automatisch",
+    "dragDrop": "Datei hierher ziehen oder klicken zum Auswählen",
+    "formats": "JPG, PNG, PDF · Max 10 MB",
+    "intentLabel": "Was möchten Sie mit diesem Dokument tun?",
+    "intentHint": "(optional — wir erkennen es sonst automatisch)",
+    "extractedText": "Aus dem Dokument extrahierter Text",
+    "analyzing": "Dokument wird analysiert...",
+    "analyze": "Dokument analysieren →",
+    "fileTooLarge": "Datei zu groß (max. 10 MB)",
+    "selectFile": "Bitte wählen Sie eine Datei aus"
+  },
+  "form": {
+    "photoTitle": "Aus einem Foto ausfüllen",
+    "dragDrop": "Dokument ziehen oder",
+    "clickToChoose": "klicken zum Auswählen",
+    "formats": "JPG · PNG · HEIC · PDF",
+    "analyzing": "Analyse...",
+    "analyze": "Analysieren →",
+    "autoFilled": "Automatisch ausgefüllt",
+    "autoFilledCount": "{count, plural, one {# Feld automatisch ausgefüllt} other {# Felder automatisch ausgefüllt}}",
+    "autoFilledVerify": "{count, plural, one {# Feld ausgefüllt} other {# Felder ausgefüllt}} — vor dem Fortfahren prüfen",
+    "noExtraction": "Keine Informationen extrahiert — füllen Sie die Felder manuell aus.",
+    "allExtracted": "Alle Informationen wurden automatisch extrahiert.",
+    "generateLetter": "Meinen Brief erstellen →",
+    "generating": "Brief wird erstellt...",
+    "disclaimer": "Sie können den Brief vor dem Herunterladen bearbeiten",
+    "placeholder": "Ihre Antwort...",
+    "unsupportedFormat": "Nicht unterstütztes Format. Verwenden Sie ein Bild oder PDF.",
+    "requiredField": "Bitte beantworten Sie: \"{question}\"",
+    "scanStep0": "Dokument wird gelesen...",
+    "scanStep1": "Infos werden gesucht...",
+    "scanStep2": "Alles wird verarbeitet...",
+    "scanStep3": "Etwas Magie passiert gerade...",
+    "scanStep4": "Fast fertig!"
+  },
+  "templateBanner": {
+    "autoDetected": "automatisch erkannt",
+    "noTemplate": "Keine Vorlage ausgewählt",
+    "change": "Ändern",
+    "chooseTemplate": "Vorlage auswählen"
+  },
+  "result": {
+    "back": "Dashboard",
+    "title": "Ihr Brief ist fertig",
+    "subtitle": "Prüfen, bei Bedarf bearbeiten, dann herunterladen oder kopieren",
+    "disclaimerText": "Entwurf basierend auf Ihrer Situation erstellt.",
+    "disclaimerBold": "Sorgfältig lesen vor dem Versenden.",
+    "disclaimerLegal": "Dieses Dokument stellt keine Rechtsberatung dar."
+  }
+}

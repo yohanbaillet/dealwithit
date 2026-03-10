@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { Navbar } from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
 import { ExampleCards } from '@/components/landing/ExampleCards'
 import { TrustBanner } from '@/components/landing/TrustBanner'
 
@@ -14,9 +15,7 @@ export default async function LandingPage() {
         <ExampleCards />
         <TrustBanner />
       </main>
-      <footer className="border-t border-gray-100 py-6 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} dealWithIt · Vos lettres administratives simplifiées
-      </footer>
+      <Footer />
     </div>
   )
 }

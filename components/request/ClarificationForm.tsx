@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { submitAnswers } from '@/actions/clarify'
 import { extractFromDocumentForClarify } from '@/actions/upload'
 import type { ClarificationQuestion } from '@/types'
@@ -9,11 +10,20 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Camera, CheckCircle2, Loader2, Upload, X } from 'lucide-react'
+import { Camera, CheckCircle2, Loader2, Upload } from 'lucide-react'
 import { toast } from 'sonner'
 
 const TEXTAREA_KEYS = ['complaint_description', 'request_details', 'contest_reason', 'expected_resolution']
 const DATE_KEYS = ['termination_date', 'offense_date']
+
+const KNOWN_FIELD_KEYS = [
+  'sender_name', 'sender_address', 'company_name', 'contract_number',
+  'termination_date', 'fine_reference', 'offense_date', 'vehicle_plate',
+  'offense_city', 'fine_amount', 'contest_reason', 'complaint_description',
+  'expected_resolution', 'request_details',
+]
+
+const SCAN_EMOJIS = ['📸', '🔍', '🧠', '🪄', '✨']
 
 interface Props {
   requestId: string
@@ -21,47 +31,67 @@ interface Props {
 }
 
 export function ClarificationForm({ requestId, questions }: Props) {
+  const t = useTranslations('form')
+  const tFields = useTranslations('fields')
   const [loading, setLoading] = useState(false)
   const [scanning, setScanning] = useState(false)
+  const [scanProgress, setScanProgress] = useState(0)
+  const [scanStepIndex, setScanStepIndex] = useState(0)
+  const [scanDone, setScanDone] = useState(false)
   const [autoFilledKeys, setAutoFilledKeys] = useState<Set<string>>(new Set())
-  const [selectedScanFile, setSelectedScanFile] = useState<File | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Controlled values — initialised from DB answers (may already be pre-filled by upload flow)
   const [values, setValues] = useState<Record<string, string>>(
     Object.fromEntries(questions.map((q) => [q.field_key, q.answer || '']))
   )
 
-  const handlePhotoSelect = (file: File) => {
-    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'application/pdf']
-    if (!allowed.includes(file.type) && !file.name.toLowerCase().endsWith('.heic')) {
-      toast.error('Format non supporté. Utilisez une image ou un PDF.')
-      return
+  const steps = SCAN_EMOJIS.map((icon, i) => ({ icon, text: t(`scanStep${i}` as Parameters<typeof t>[0]) }))
+
+  // Animate progress bar and cycle messages while scanning
+  useEffect(() => {
+    if (!scanning) return
+
+    const progressInterval = setInterval(() => {
+      setScanProgress((prev) => {
+        if (prev >= 85) return prev
+        return prev + (85 - prev) * 0.04 + 0.8
+      })
+    }, 80)
+
+    const messageInterval = setInterval(() => {
+      setScanStepIndex((prev) => (prev + 1) % steps.length)
+    }, 1600)
+
+    return () => {
+      clearInterval(progressInterval)
+      clearInterval(messageInterval)
     }
-    setSelectedScanFile(file)
+  }, [scanning, steps.length])
+
+  const getFieldLabel = (fieldKey: string, fallback: string) => {
+    if (KNOWN_FIELD_KEYS.includes(fieldKey)) {
+      return tFields(fieldKey as Parameters<typeof tFields>[0])
+    }
+    return fallback
   }
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-    const file = e.dataTransfer.files[0]
-    if (file) handlePhotoSelect(file)
-  }, [])
-
-  const handleScan = async () => {
-    if (!selectedScanFile) return
+  const startScan = async (file: File) => {
     setScanning(true)
+    setScanProgress(0)
+    setScanStepIndex(0)
+    setScanDone(false)
 
     const formData = new FormData()
-    formData.append('file', selectedScanFile)
+    formData.append('file', file)
 
     const result = await extractFromDocumentForClarify(requestId, formData)
 
     if ('error' in result) {
       toast.error(result.error)
       setScanning(false)
+      setScanProgress(0)
       return
     }
 
@@ -80,16 +110,36 @@ export function ClarificationForm({ requestId, questions }: Props) {
     })
 
     setAutoFilledKeys(filled)
+
+    // Finish the bar
+    setScanProgress(100)
+    setScanDone(true)
+    await new Promise((r) => setTimeout(r, 600))
     setScanning(false)
-    setSelectedScanFile(null)
 
     const count = filled.size
     if (count > 0) {
-      toast.success(`${count} champ${count > 1 ? 's' : ''} rempli${count > 1 ? 's' : ''} automatiquement`)
+      toast.success(t('autoFilledCount', { count }))
     } else {
-      toast.info("Aucune information extraite — remplissez les champs manuellement.")
+      toast.info(t('noExtraction'))
     }
   }
+
+  const handlePhotoSelect = (file: File) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'application/pdf']
+    if (!allowed.includes(file.type) && !file.name.toLowerCase().endsWith('.heic')) {
+      toast.error(t('unsupportedFormat'))
+      return
+    }
+    startScan(file)
+  }
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+    const file = e.dataTransfer.files[0]
+    if (file) handlePhotoSelect(file)
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -100,11 +150,10 @@ export function ClarificationForm({ requestId, questions }: Props) {
       formData.append(key, value)
     }
 
-    // Check required fields
     for (const q of questions.filter((q) => q.is_required)) {
       const val = values[q.field_key]
       if (!val || !val.trim()) {
-        toast.error(`Veuillez répondre : "${q.question}"`)
+        toast.error(t('requiredField', { question: getFieldLabel(q.field_key, q.question) }))
         setLoading(false)
         return
       }
@@ -120,27 +169,47 @@ export function ClarificationForm({ requestId, questions }: Props) {
   if (questions.length === 0) {
     return (
       <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center">
-        <p className="text-gray-500">Toutes les informations ont été extraites automatiquement.</p>
+        <p className="text-gray-500">{t('allExtracted')}</p>
         <Button
           onClick={() => router.push(`/request/${requestId}/result`)}
           className="mt-4 bg-gray-900 hover:bg-gray-800"
         >
-          Générer ma lettre →
+          {t('generateLetter')}
         </Button>
       </div>
     )
   }
 
+  const currentStep = steps[scanStepIndex]
+
   return (
     <div className="space-y-6">
-      {/* Photo upload zone — auto-fill shortcut */}
+      {/* Photo upload zone */}
       <div className="rounded-xl border border-gray-200 bg-white p-4">
         <p className="mb-3 text-sm font-medium text-gray-700">
           <Camera className="mr-1.5 inline h-4 w-4 text-gray-400" />
-          Remplir depuis une photo
+          {t('photoTitle')}
         </p>
 
-        {!selectedScanFile ? (
+        {scanning ? (
+          /* ---- Scanning progress ---- */
+          <div className="rounded-lg border border-gray-100 bg-gray-50 px-4 py-5">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="text-xl leading-none">{currentStep.icon}</span>
+              <p className="text-sm font-medium text-gray-700 transition-all">{currentStep.text}</p>
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+              <div
+                className={`h-full rounded-full transition-all duration-200 ${
+                  scanDone ? 'bg-emerald-500' : 'bg-gray-900'
+                }`}
+                style={{ width: `${scanProgress}%` }}
+              />
+            </div>
+            <p className="mt-1.5 text-right text-xs text-gray-400">{Math.round(scanProgress)}%</p>
+          </div>
+        ) : (
+          /* ---- Drop zone ---- */
           <div
             onDrop={handleDrop}
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
@@ -154,40 +223,10 @@ export function ClarificationForm({ requestId, questions }: Props) {
           >
             <Upload className="mx-auto mb-2 h-6 w-6 text-gray-300" />
             <p className="text-sm text-gray-500">
-              Glissez votre document ou{' '}
-              <span className="font-medium text-gray-700">cliquez pour choisir</span>
+              {t('dragDrop')}{' '}
+              <span className="font-medium text-gray-700">{t('clickToChoose')}</span>
             </p>
-            <p className="mt-1 text-xs text-gray-400">JPG · PNG · HEIC · PDF</p>
-          </div>
-        ) : (
-          <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3">
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-gray-800">{selectedScanFile.name}</p>
-            </div>
-            <Button
-              type="button"
-              onClick={handleScan}
-              disabled={scanning}
-              size="sm"
-              className="shrink-0 bg-gray-900 hover:bg-gray-800"
-            >
-              {scanning ? (
-                <>
-                  <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                  Analyse...
-                </>
-              ) : (
-                'Analyser →'
-              )}
-            </Button>
-            <button
-              type="button"
-              disabled={scanning}
-              onClick={() => setSelectedScanFile(null)}
-              className="rounded p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            <p className="mt-1 text-xs text-gray-400">{t('formats')}</p>
           </div>
         )}
 
@@ -203,10 +242,10 @@ export function ClarificationForm({ requestId, questions }: Props) {
           }}
         />
 
-        {autoFilledKeys.size > 0 && (
+        {autoFilledKeys.size > 0 && !scanning && (
           <p className="mt-2 flex items-center gap-1.5 text-xs text-emerald-600">
             <CheckCircle2 className="h-3.5 w-3.5" />
-            {autoFilledKeys.size} champ{autoFilledKeys.size > 1 ? 's' : ''} rempli{autoFilledKeys.size > 1 ? 's' : ''} automatiquement — vérifiez avant de continuer
+            {t('autoFilledVerify', { count: autoFilledKeys.size })}
           </p>
         )}
       </div>
@@ -216,16 +255,17 @@ export function ClarificationForm({ requestId, questions }: Props) {
         {questions.map((q) => {
           const isAutoFilled = autoFilledKeys.has(q.field_key)
           const value = values[q.field_key] ?? ''
+          const label = getFieldLabel(q.field_key, q.question)
 
           return (
             <div key={q.id} className="space-y-1.5">
               <Label htmlFor={q.field_key} className="text-sm font-medium text-gray-800">
-                {q.question}
+                {label}
                 {q.is_required && <span className="ml-1 text-red-500">*</span>}
                 {isAutoFilled && (
                   <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-normal text-emerald-600">
                     <CheckCircle2 className="h-3 w-3" />
-                    Auto-rempli
+                    {t('autoFilled')}
                   </span>
                 )}
               </Label>
@@ -236,7 +276,7 @@ export function ClarificationForm({ requestId, questions }: Props) {
                   name={q.field_key}
                   value={value}
                   onChange={(e) => setValues((prev) => ({ ...prev, [q.field_key]: e.target.value }))}
-                  placeholder="Votre réponse..."
+                  placeholder={t('placeholder')}
                   rows={3}
                   required={q.is_required}
                   className={`resize-none ${isAutoFilled ? 'border-emerald-200 bg-emerald-50/30' : ''}`}
@@ -257,7 +297,7 @@ export function ClarificationForm({ requestId, questions }: Props) {
                   name={q.field_key}
                   value={value}
                   onChange={(e) => setValues((prev) => ({ ...prev, [q.field_key]: e.target.value }))}
-                  placeholder="Votre réponse..."
+                  placeholder={t('placeholder')}
                   required={q.is_required}
                   className={isAutoFilled ? 'border-emerald-200 bg-emerald-50/30' : ''}
                 />
@@ -270,20 +310,18 @@ export function ClarificationForm({ requestId, questions }: Props) {
           <Button
             type="submit"
             className="w-full bg-gray-900 py-5 text-base hover:bg-gray-800"
-            disabled={loading}
+            disabled={loading || scanning}
           >
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Génération de la lettre...
+                {t('generating')}
               </>
             ) : (
-              'Générer ma lettre →'
+              t('generateLetter')
             )}
           </Button>
-          <p className="mt-2 text-center text-xs text-gray-400">
-            Vous pourrez modifier la lettre avant de la télécharger
-          </p>
+          <p className="mt-2 text-center text-xs text-gray-400">{t('disclaimer')}</p>
         </div>
       </form>
     </div>

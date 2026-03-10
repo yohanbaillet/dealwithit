@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { generateLetter, getAttachmentChecklist, getNextSteps } from '@/lib/ai/generate'
 import type { LetterContext } from '@/types'
+import { getLocale } from 'next-intl/server'
 
 export async function runGenerationPipeline(requestId: string) {
   const supabase = await createClient()
@@ -36,9 +37,11 @@ export async function runGenerationPipeline(requestId: string) {
     if (q.answer) answers[q.field_key] = q.answer
   }
 
+  const locale = await getLocale()
+
   const ctx: LetterContext = {
     intent: request.intent_type,
-    language: request.language,
+    language: locale,
     entities: entities || [],
     answers,
   }

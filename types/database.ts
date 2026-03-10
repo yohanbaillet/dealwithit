@@ -46,6 +46,7 @@ export interface Database {
           user_id: string
           status: RequestStatus
           intent_type: IntentType | null
+          template_key: string | null
           raw_input: string | null
           title: string | null
           language: string
@@ -57,6 +58,7 @@ export interface Database {
           user_id: string
           status?: RequestStatus
           intent_type?: IntentType | null
+          template_key?: string | null
           raw_input?: string | null
           title?: string | null
           language?: string
@@ -64,6 +66,7 @@ export interface Database {
         Update: {
           status?: RequestStatus
           intent_type?: IntentType | null
+          template_key?: string | null
           raw_input?: string | null
           title?: string | null
           language?: string

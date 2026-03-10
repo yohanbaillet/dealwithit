@@ -1,28 +1,36 @@
 import type { IntentType, ExtractedEntity, QuestionInput } from '@/types'
+import { getTemplate } from '@/lib/templates'
 
 // TODO: replace with Claude API call
 // Ask Claude which questions are still needed given current entities
 export async function generateQuestions(
   entities: ExtractedEntity[],
-  intent: IntentType
+  intent: IntentType,
+  templateKey?: string | null
 ): Promise<QuestionInput[]> {
   await new Promise((r) => setTimeout(r, 400))
 
   const questions: QuestionInput[] = []
   const entityMap = new Map(entities.map((e) => [e.entity_type, e]))
+  const template = getTemplate(templateKey)
+  const overrides = template?.questionOverrides ?? {}
+
+  // Helper: resolve question text, applying template override if present
+  const q = (fieldKey: string, defaultText: string): string =>
+    overrides[fieldKey] ?? defaultText
 
   let index = 0
 
   // Always need sender info
   questions.push({
-    question: 'Quel est votre nom complet ?',
+    question: q('sender_name', 'Quel est votre nom complet ?'),
     field_key: 'sender_name',
     is_required: true,
     order_index: index++,
   })
 
   questions.push({
-    question: 'Quelle est votre adresse postale complète ?',
+    question: q('sender_address', 'Quelle est votre adresse postale complète ?'),
     field_key: 'sender_address',
     is_required: true,
     order_index: index++,
@@ -37,7 +45,7 @@ export async function generateQuestions(
     const company = entityMap.get('company_name')
     if (!company || !company.value || company.confidence < 0.5) {
       questions.push({
-        question: 'Quel est le nom de l\'entreprise ou du service concerné ?',
+        question: q('company_name', 'Quel est le nom de l\'entreprise ou du service concerné ?'),
         field_key: 'company_name',
         is_required: true,
         order_index: index++,
@@ -47,7 +55,7 @@ export async function generateQuestions(
     // Contract number missing
     if (!entityMap.has('contract_number')) {
       questions.push({
-        question: 'Avez-vous un numéro de contrat, d\'abonnement ou de référence client ?',
+        question: q('contract_number', 'Avez-vous un numéro de contrat, d\'abonnement ou de référence client ?'),
         field_key: 'contract_number',
         is_required: false,
         order_index: index++,
@@ -59,7 +67,7 @@ export async function generateQuestions(
   if (intent === 'terminate') {
     if (!entityMap.get('termination_date')?.value) {
       questions.push({
-        question: 'À quelle date souhaitez-vous que la résiliation prenne effet ?',
+        question: q('termination_date', 'À quelle date souhaitez-vous que la résiliation prenne effet ?'),
         field_key: 'termination_date',
         is_required: true,
         order_index: index++,
@@ -69,7 +77,7 @@ export async function generateQuestions(
     const reason = entityMap.get('notice_reason')
     if (!reason?.value) {
       questions.push({
-        question: 'Quelle est la raison principale de votre résiliation ? (optionnel)',
+        question: q('termination_reason', 'Quelle est la raison principale de votre résiliation ? (optionnel)'),
         field_key: 'termination_reason',
         is_required: false,
         order_index: index++,
@@ -137,7 +145,7 @@ export async function generateQuestions(
       // Generic contestation (bill, charge dispute, etc.)
       if (!entityMap.get('contest_reason')?.value) {
         questions.push({
-          question: 'Sur quoi portent vos contestations ? Expliquez brièvement.',
+          question: q('contest_reason', 'Sur quoi portent vos contestations ? Expliquez brièvement.'),
           field_key: 'contest_reason',
           is_required: true,
           order_index: index++,
@@ -146,7 +154,7 @@ export async function generateQuestions(
 
       if (!entityMap.get('fine_amount')?.value) {
         questions.push({
-          question: 'Quel est le montant contesté (si applicable) ?',
+          question: q('fine_amount', 'Quel est le montant contesté (si applicable) ?'),
           field_key: 'fine_amount',
           is_required: false,
           order_index: index++,
@@ -157,14 +165,14 @@ export async function generateQuestions(
 
   if (intent === 'complain') {
     questions.push({
-      question: 'Décrivez le problème rencontré et la date à laquelle il s\'est produit.',
+      question: q('complaint_description', 'Décrivez le problème rencontré et la date à laquelle il s\'est produit.'),
       field_key: 'complaint_description',
       is_required: true,
       order_index: index++,
     })
 
     questions.push({
-      question: 'Quelle solution ou compensation attendez-vous ?',
+      question: q('expected_resolution', 'Quelle solution ou compensation attendez-vous ?'),
       field_key: 'expected_resolution',
       is_required: false,
       order_index: index++,
@@ -173,7 +181,7 @@ export async function generateQuestions(
 
   if (intent === 'certify') {
     questions.push({
-      question: 'Quel type d\'attestation souhaitez-vous ? (ex: attestation sur l\'honneur, de résidence, etc.)',
+      question: q('certificate_type', 'Quel type d\'attestation souhaitez-vous ? (ex: attestation sur l\'honneur, de résidence, etc.)'),
       field_key: 'certificate_type',
       is_required: true,
       order_index: index++,
@@ -182,7 +190,7 @@ export async function generateQuestions(
 
   if (intent === 'request') {
     questions.push({
-      question: 'Que demandez-vous exactement ? Soyez précis.',
+      question: q('request_details', 'Que demandez-vous exactement ? Soyez précis.'),
       field_key: 'request_details',
       is_required: true,
       order_index: index++,

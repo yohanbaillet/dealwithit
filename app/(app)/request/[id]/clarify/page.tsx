@@ -2,8 +2,9 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ClarificationForm } from '@/components/request/ClarificationForm'
-import { IntentSummary } from '@/components/request/IntentSummary'
+import { TemplateBanner } from '@/components/request/TemplateBanner'
 import { ArrowLeft } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -16,6 +17,8 @@ export default async function ClarifyPage({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return notFound()
 
+  const t = await getTranslations('clarify')
+
   const { data: request } = await supabase
     .from('requests')
     .select('*')
@@ -25,33 +28,28 @@ export default async function ClarifyPage({ params }: Props) {
 
   if (!request) return notFound()
 
-  const [{ data: entities }, { data: questions }] = await Promise.all([
-    supabase.from('extracted_entities').select('*').eq('request_id', id),
-    supabase
-      .from('clarification_questions')
-      .select('*')
-      .eq('request_id', id)
-      .order('order_index'),
-  ])
+  const { data: questions } = await supabase
+    .from('clarification_questions')
+    .select('*')
+    .eq('request_id', id)
+    .order('order_index')
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <Link
-        href="/request/new"
+        href="/"
         className="mb-8 inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600"
       >
         <ArrowLeft className="h-3.5 w-3.5" />
-        Retour
+        {t('back')}
       </Link>
 
       <div className="mb-6">
         <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
-          Étape 2 sur 3
+          {t('step')}
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">Vérifiez les informations</h1>
-        <p className="mt-1 text-gray-500">
-          On a extrait ce qu'on a pu — complétez les champs manquants
-        </p>
+        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <p className="mt-1 text-gray-500">{t('subtitle')}</p>
       </div>
 
       {/* Progress bar */}
@@ -59,13 +57,12 @@ export default async function ClarifyPage({ params }: Props) {
         <div className="h-full w-2/3 rounded-full bg-gray-900 transition-all" />
       </div>
 
-      {request.intent_type && (
-        <IntentSummary
-          intent={request.intent_type}
-          entities={entities || []}
-          rawInput={request.raw_input}
-        />
-      )}
+      {/* Template banner — shows active template, allows changing */}
+      <TemplateBanner
+        requestId={id}
+        templateKey={request.template_key ?? null}
+        intentType={request.intent_type ?? null}
+      />
 
       <ClarificationForm
         requestId={id}

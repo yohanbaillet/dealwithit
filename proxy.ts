@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE, type Locale } from '@/i18n/request'
 
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
@@ -47,6 +48,22 @@ export async function proxy(request: NextRequest) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
+  }
+
+  // Auto-detect locale from Accept-Language header on first visit
+  if (!request.cookies.has('NEXT_LOCALE')) {
+    const acceptLanguage = request.headers.get('accept-language') ?? ''
+    const preferred = acceptLanguage
+      .split(',')
+      .map((part) => part.split(';')[0].trim().slice(0, 2).toLowerCase())
+      .find((lang) => SUPPORTED_LOCALES.includes(lang as Locale))
+
+    const locale = (preferred ?? DEFAULT_LOCALE) as Locale
+    supabaseResponse.cookies.set('NEXT_LOCALE', locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: 'lax',
+    })
   }
 
   return supabaseResponse

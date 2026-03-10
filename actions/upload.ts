@@ -39,7 +39,10 @@ export async function uploadDocumentAndProcess(
     .from('documents')
     .upload(filePath, file)
 
-  if (uploadError) return { error: 'Erreur lors du téléversement du fichier.' }
+  if (uploadError) {
+    console.error('[upload] storage error:', uploadError.message)
+    return { error: `Erreur lors du téléversement : ${uploadError.message}` }
+  }
 
   // Real extraction via Claude vision
   const extracted = await extractFromDocument(file)

@@ -1,0 +1,160 @@
+{
+  "landing": {
+    "hero": {
+      "title": "Your administrative letter",
+      "titleHighlight": "in seconds.",
+      "subtitle": "Choose your situation — or import a document to fill everything in automatically.",
+      "uploadCta": "Import a photo or document",
+      "uploadSubtitle": "Invoice, contract, letter — we fill everything in automatically",
+      "divider": "or choose a case",
+      "searchPlaceholder": "Search a situation...",
+      "showMore": "See more situations ({count})",
+      "showLess": "See less",
+      "noResults": "No results",
+      "noResultsHint": "Try a different keyword or filter",
+      "reset": "Reset",
+      "useTemplate": "Use this template",
+      "loading": "Preparing..."
+    },
+    "filters": {
+      "all": "All",
+      "terminate": "Cancellation",
+      "contest": "Dispute",
+      "complain": "Complaint",
+      "request": "Refund"
+    },
+    "trust": {
+      "item1Title": "Draft to review",
+      "item1Desc": "Every letter is presented as a draft to verify before sending",
+      "item2Title": "Data protected",
+      "item2Desc": "Your information is encrypted and never shared",
+      "item3Title": "6 countries covered",
+      "item3Desc": "France, Germany, United Kingdom, Spain, Italy, United States",
+      "disclaimer": "dealWithIt generates administrative drafts for informational purposes. This service does not constitute legal advice. Always review your letters before sending."
+    }
+  },
+  "nav": {
+    "myLetters": "My letters",
+    "login": "Login",
+    "signup": "Get started",
+    "logout": "Logout"
+  },
+  "footer": {
+    "copyright": "© {year} dealWithIt · Your administrative letters simplified"
+  },
+  "intents": {
+    "terminate": "Cancellation",
+    "contest": "Dispute",
+    "complain": "Complaint",
+    "request": "Refund",
+    "certify": "Certificate"
+  },
+  "templates": {
+    "gym_cancel": "Cancel my gym membership",
+    "phone_cancel": "Cancel my phone plan",
+    "radar_fine": "Contest a speed camera fine",
+    "lost_parcel": "Claim for a lost or undelivered parcel",
+    "invoice_dispute": "Dispute an incorrect or excessive invoice",
+    "insurance_home_cancel": "Cancel my home insurance",
+    "parking_fine": "Contest a parking fine",
+    "transport_complaint": "Claim transport compensation",
+    "box_cancel": "Cancel my internet / TV subscription",
+    "insurance_car_cancel": "Cancel my car insurance",
+    "streaming_cancel": "Cancel a streaming subscription",
+    "health_cancel": "Cancel my health insurance",
+    "bank_dispute": "Dispute unjustified bank charges",
+    "defective_product": "Claim for a defective product",
+    "service_complaint": "Complain about unsatisfactory service",
+    "refund_request": "Request a refund"
+  },
+  "fields": {
+    "sender_name": "Your full name",
+    "sender_address": "Your full postal address",
+    "company_name": "Company / organization name",
+    "contract_number": "Contract / customer number",
+    "termination_date": "Desired termination date",
+    "fine_reference": "Fine reference number",
+    "offense_date": "Date of offense",
+    "vehicle_plate": "Vehicle plate number",
+    "offense_city": "City / location of offense",
+    "fine_amount": "Amount of the fine",
+    "contest_reason": "Reason for your dispute",
+    "complaint_description": "Description of your complaint",
+    "expected_resolution": "Expected resolution",
+    "request_details": "Details of your request"
+  },
+  "dashboard": {
+    "greeting": "Hello, {name} 👋",
+    "title": "My letters",
+    "requestCount": "{count, plural, =0 {No requests} one {# request} other {# requests}}",
+    "newLetter": "New letter",
+    "emptyTitle": "You don't have any letters yet",
+    "emptySubtitle": "Describe your situation to generate your first letter",
+    "emptyAction": "Get started",
+    "untitled": "Untitled request",
+    "status": {
+      "draft": "Draft",
+      "clarifying": "In progress",
+      "generating": "Generating...",
+      "complete": "Complete"
+    }
+  },
+  "clarify": {
+    "back": "Back",
+    "step": "Step 2 of 3",
+    "title": "Verify the information",
+    "subtitle": "We extracted what we could — complete the missing fields"
+  },
+  "upload": {
+    "back": "Back",
+    "title": "Import your document",
+    "subtitle": "Photo, scan or PDF — we extract the information automatically",
+    "dragDrop": "Drag a file here or click to choose",
+    "formats": "JPG, PNG, PDF · Max 10 MB",
+    "intentLabel": "What do you want to do with this document?",
+    "intentHint": "(optional — we'll detect it otherwise)",
+    "extractedText": "Text extracted from document",
+    "analyzing": "Analyzing document...",
+    "analyze": "Analyze document →",
+    "fileTooLarge": "File too large (max 10 MB)",
+    "selectFile": "Please select a file"
+  },
+  "form": {
+    "photoTitle": "Fill from a photo",
+    "dragDrop": "Drag your document or",
+    "clickToChoose": "click to choose",
+    "formats": "JPG · PNG · HEIC · PDF",
+    "analyzing": "Analyzing...",
+    "analyze": "Analyze →",
+    "autoFilled": "Auto-filled",
+    "autoFilledCount": "{count, plural, one {# field filled automatically} other {# fields filled automatically}}",
+    "autoFilledVerify": "{count, plural, one {# field filled} other {# fields filled}} — verify before continuing",
+    "noExtraction": "No information extracted — fill in the fields manually.",
+    "allExtracted": "All information was extracted automatically.",
+    "generateLetter": "Generate my letter →",
+    "generating": "Generating letter...",
+    "disclaimer": "You can edit the letter before downloading",
+    "placeholder": "Your answer...",
+    "unsupportedFormat": "Unsupported format. Use an image or PDF.",
+    "requiredField": "Please answer: \"{question}\"",
+    "scanStep0": "Reading your document...",
+    "scanStep1": "Hunting for the good stuff...",
+    "scanStep2": "Making sense of it all...",
+    "scanStep3": "Working some magic...",
+    "scanStep4": "Almost there!"
+  },
+  "templateBanner": {
+    "autoDetected": "auto-detected",
+    "noTemplate": "No template selected",
+    "change": "Change",
+    "chooseTemplate": "Choose a template"
+  },
+  "result": {
+    "back": "Dashboard",
+    "title": "Your letter is ready",
+    "subtitle": "Review, edit if needed, then download or copy",
+    "disclaimerText": "Draft generated from your situation.",
+    "disclaimerBold": "Read carefully before sending.",
+    "disclaimerLegal": "This document is not legal advice."
+  }
+}

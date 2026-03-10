@@ -9,6 +9,7 @@ import { ArrowLeft, Upload, Camera, FileText, Loader2, CheckCircle } from 'lucid
 import { toast } from 'sonner'
 import type { IntentType } from '@/types'
 import { INTENT_LABELS } from '@/types'
+import { useTranslations } from 'next-intl'
 
 const INTENTS: { value: IntentType; emoji: string }[] = [
   { value: 'terminate', emoji: '🔴' },
@@ -26,9 +27,12 @@ export default function UploadPage() {
   const [loading, setLoading] = useState(false)
   const [ocrPreview, setOcrPreview] = useState<string | null>(null)
 
+  const t = useTranslations('upload')
+  const tIntents = useTranslations('intents')
+
   const handleFile = (f: File) => {
     if (f.size > 10 * 1024 * 1024) {
-      toast.error('Fichier trop volumineux (max 10 Mo)')
+      toast.error(t('fileTooLarge'))
       return
     }
     setFile(f)
@@ -41,7 +45,7 @@ export default function UploadPage() {
   }
 
   const handleSubmit = async () => {
-    if (!file) return toast.error('Veuillez sélectionner un fichier')
+    if (!file) return toast.error(t('selectFile'))
     setLoading(true)
 
     const formData = new FormData()
@@ -66,18 +70,16 @@ export default function UploadPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <Link
-        href="/request/new"
+        href="/"
         className="mb-8 inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600"
       >
         <ArrowLeft className="h-3.5 w-3.5" />
-        Retour
+        {t('back')}
       </Link>
 
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Importez votre document</h1>
-        <p className="mt-1 text-gray-500">
-          Photo, scan ou PDF — on extrait les informations automatiquement
-        </p>
+        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <p className="mt-1 text-gray-500">{t('subtitle')}</p>
       </div>
 
       {/* Upload zone */}
@@ -114,12 +116,8 @@ export default function UploadPage() {
               <Upload className="h-8 w-8 text-gray-300" />
               <Camera className="h-8 w-8 text-gray-300" />
             </div>
-            <p className="font-medium text-gray-700">
-              Glissez un fichier ici ou cliquez pour choisir
-            </p>
-            <p className="text-sm text-gray-400">
-              JPG, PNG, PDF · Max 10 Mo
-            </p>
+            <p className="font-medium text-gray-700">{t('dragDrop')}</p>
+            <p className="text-sm text-gray-400">{t('formats')}</p>
           </div>
         )}
       </div>
@@ -127,7 +125,7 @@ export default function UploadPage() {
       {/* Intent override */}
       <div className="mb-6">
         <p className="mb-3 text-sm font-medium text-gray-700">
-          Que voulez-vous faire avec ce document ? (optionnel — on détectera sinon)
+          {t('intentLabel')} <span className="font-normal text-gray-400">{t('intentHint')}</span>
         </p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {INTENTS.map(({ value, emoji }) => (
@@ -140,7 +138,7 @@ export default function UploadPage() {
                   : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
               }`}
             >
-              {emoji} {INTENT_LABELS[value].fr}
+              {emoji} {tIntents(value)}
             </button>
           ))}
         </div>
@@ -151,7 +149,7 @@ export default function UploadPage() {
         <div className="mb-6 rounded-xl border border-gray-200 bg-gray-50 p-4">
           <div className="mb-2 flex items-center gap-2">
             <FileText className="h-4 w-4 text-gray-500" />
-            <p className="text-sm font-medium text-gray-700">Texte extrait du document</p>
+            <p className="text-sm font-medium text-gray-700">{t('extractedText')}</p>
           </div>
           <pre className="whitespace-pre-wrap text-xs text-gray-500">{ocrPreview}</pre>
         </div>
@@ -165,10 +163,10 @@ export default function UploadPage() {
         {loading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Analyse du document...
+            {t('analyzing')}
           </>
         ) : (
-          'Analyser le document →'
+          t('analyze')
         )}
       </Button>
     </div>
