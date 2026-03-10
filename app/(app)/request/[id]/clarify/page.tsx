@@ -67,6 +67,7 @@ export default async function ClarifyPage({ params }: Props) {
       <ClarificationForm
         requestId={id}
         questions={questions || []}
+        templateKey={request.template_key ?? null}
       />
     </div>
   )

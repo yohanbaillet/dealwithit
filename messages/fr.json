@@ -141,7 +141,9 @@
     "scanStep1": "Repérage des infos clés...",
     "scanStep2": "Déchiffrage en cours...",
     "scanStep3": "Magie administrative...",
-    "scanStep4": "Presque prêt !"
+    "scanStep4": "Presque prêt !",
+    "autre": "Autre",
+    "autrePlaceholder": "Saisissez le nom..."
   },
   "templateBanner": {
     "autoDetected": "détecté automatiquement",

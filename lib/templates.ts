@@ -5,6 +5,7 @@ export interface TemplateField {
   question: string     // French — shown in form, used by AI letter generator
   required?: boolean   // default true
   type?: 'text' | 'date' | 'textarea'
+  companyOptions?: string[]  // pre-populated choices; last option is always "Autre"
 }
 
 export interface Template {
@@ -52,7 +53,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon abonnement à ma salle de sport',
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: 'Quel est le nom de votre salle de sport ?' },
+      { key: 'company_name', question: 'Quel est le nom de votre salle de sport ?', companyOptions: ['Basic-Fit', 'Fitness Park', 'Keep Cool', "L'Orange Bleue", 'Neoness', 'Club Med Gym', 'Gofit', 'Reebok Sport Club'] },
       { key: 'contract_number', question: 'Avez-vous un numéro de membre ou de contrat ?', required: false },
       { key: 'termination_date', question: 'À quelle date souhaitez-vous résilier ?', type: 'date' },
     ],
@@ -67,7 +68,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon abonnement téléphonique',
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: 'Quel est votre opérateur mobile ?' },
+      { key: 'company_name', question: 'Quel est votre opérateur mobile ?', companyOptions: ['Orange', 'SFR', 'Bouygues Telecom', 'Free Mobile', 'Coriolis', 'Prixtel', 'NRJ Mobile', 'Auchan Telecom'] },
       { key: 'contract_number', question: 'Quel est votre numéro de client ou de ligne ?' },
       { key: 'termination_date', question: 'À quelle date souhaitez-vous résilier ?', type: 'date' },
     ],
@@ -101,7 +102,7 @@ export const TEMPLATES: Template[] = [
     description: "Mon colis n'est pas arrivé et je demande un remboursement ou un réenvoi",
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: 'Chez quel vendeur ou transporteur avez-vous commandé ?' },
+      { key: 'company_name', question: 'Chez quel vendeur ou transporteur avez-vous commandé ?', companyOptions: ['Amazon', 'Cdiscount', 'Vinted', 'Leboncoin', 'La Poste / Colissimo', 'Chronopost', 'DHL', 'UPS', 'DPD', 'GLS'] },
       { key: 'complaint_description', question: 'Décrivez le problème : numéro de commande, date de livraison prévue, suivi du colis si disponible.', type: 'textarea' },
       { key: 'expected_resolution', question: 'Que souhaitez-vous : remboursement complet, réenvoi du colis, ou autre ?' },
     ],
@@ -130,7 +131,7 @@ export const TEMPLATES: Template[] = [
     description: "Je veux résilier mon assurance habitation",
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: "Quel est le nom de votre assureur ?" },
+      { key: 'company_name', question: "Quel est le nom de votre assureur ?", companyOptions: ['AXA', 'MAIF', 'Groupama', 'Allianz', 'GMF', 'MAAF', 'Generali', 'Macif', 'April', 'Covéa'] },
       { key: 'contract_number', question: "Quel est votre numéro de contrat d'assurance ?" },
       { key: 'termination_date', question: "Quelle est la date d'échéance de votre contrat ?", type: 'date' },
     ],
@@ -166,7 +167,7 @@ export const TEMPLATES: Template[] = [
     description: "J'ai subi un retard ou une annulation de transport et je veux une compensation",
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: 'Quel est le transporteur (SNCF, Air France, compagnie de bus…) ?' },
+      { key: 'company_name', question: 'Quel est le transporteur (SNCF, Air France, compagnie de bus…) ?', companyOptions: ['SNCF', 'Air France', 'Transavia', 'Vueling', 'EasyJet', 'Ryanair', 'RATP', 'Flixbus', 'BlaBlaCar'] },
       { key: 'complaint_description', question: 'Décrivez le problème : n° de billet, trajet, date, durée du retard ou motif d\'annulation.', type: 'textarea' },
       { key: 'expected_resolution', question: 'Que souhaitez-vous : remboursement du billet, avoir, ou indemnisation complémentaire ?' },
     ],
@@ -181,7 +182,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon abonnement box internet ou TV',
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: 'Quel est votre fournisseur (Orange, Free, SFR…) ?' },
+      { key: 'company_name', question: 'Quel est votre fournisseur (Orange, Free, SFR…) ?', companyOptions: ['Orange', 'Free', 'SFR', 'Bouygues Telecom', 'RED by SFR', 'Sosh', 'B&You'] },
       { key: 'contract_number', question: 'Quel est votre numéro de client ?' },
     ],
   },
@@ -195,7 +196,7 @@ export const TEMPLATES: Template[] = [
     description: "Je veux résilier mon assurance automobile",
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: "Quel est le nom de votre assureur auto ?" },
+      { key: 'company_name', question: "Quel est le nom de votre assureur auto ?", companyOptions: ['AXA', 'MAIF', 'Groupama', 'Allianz', 'GMF', 'MAAF', 'Generali', 'Macif', 'April', 'Direct Assurance'] },
       { key: 'contract_number', question: "Quel est votre numéro de contrat ?" },
       { key: 'termination_date', question: "À quelle date souhaitez-vous résilier (ex: date d'anniversaire) ?", type: 'date' },
     ],
@@ -210,7 +211,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon abonnement à un service de streaming',
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: 'Quel service souhaitez-vous résilier ?' },
+      { key: 'company_name', question: 'Quel service souhaitez-vous résilier ?', companyOptions: ['Netflix', 'Disney+', 'Amazon Prime Video', 'Canal+', 'Apple TV+', 'Spotify', 'Deezer', 'Paramount+', 'MAX', 'OCS', 'Crunchyroll'] },
       { key: 'contract_number', question: "Avez-vous un numéro d'abonné ou l'email du compte ?", required: false },
     ],
   },
@@ -224,7 +225,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon contrat de mutuelle santé',
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: 'Quel est le nom de votre mutuelle ?' },
+      { key: 'company_name', question: 'Quel est le nom de votre mutuelle ?', companyOptions: ['Harmonie Mutuelle', 'Malakoff Humanis', 'Alan', 'MAIF Santé', 'April Santé', 'AXA Santé', 'Henner', 'Mutex'] },
       { key: 'contract_number', question: "Quel est votre numéro d'adhérent ?" },
       { key: 'termination_date', question: "Quelle est la date d'échéance annuelle de votre contrat ?", type: 'date' },
     ],
@@ -239,7 +240,7 @@ export const TEMPLATES: Template[] = [
     description: "Je conteste des frais bancaires injustifiés prélevés sur mon compte",
     fields: [
       ...SENDER_FIELDS,
-      { key: 'company_name', question: 'Quel est le nom de votre banque ?' },
+      { key: 'company_name', question: 'Quel est le nom de votre banque ?', companyOptions: ['BNP Paribas', 'Société Générale', 'Crédit Agricole', 'LCL', "Caisse d'Épargne", 'Banque Populaire', 'La Banque Postale', 'Boursorama', 'Hello Bank', 'N26', 'Revolut'] },
       { key: 'contest_reason', question: 'Quels frais contestez-vous et pour quel motif ? (ex: frais de virement, commission, débit non autorisé…)', type: 'textarea' },
     ],
   },

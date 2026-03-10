@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { submitAnswers } from '@/actions/clarify'
 import { extractFromDocumentForClarify } from '@/actions/upload'
+import { getTemplate } from '@/lib/templates'
 import type { ClarificationQuestion } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,9 +29,10 @@ const SCAN_EMOJIS = ['📸', '🔍', '🧠', '🪄', '✨']
 interface Props {
   requestId: string
   questions: ClarificationQuestion[]
+  templateKey?: string | null
 }
 
-export function ClarificationForm({ requestId, questions }: Props) {
+export function ClarificationForm({ requestId, questions, templateKey }: Props) {
   const t = useTranslations('form')
   const tFields = useTranslations('fields')
   const [loading, setLoading] = useState(false)
@@ -43,9 +45,30 @@ export function ClarificationForm({ requestId, questions }: Props) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // Build field options map from template definition
+  const template = templateKey ? getTemplate(templateKey) : null
+  const fieldOptionsMap: Record<string, string[]> = {}
+  if (template) {
+    for (const f of template.fields) {
+      if (f.companyOptions) fieldOptionsMap[f.key] = f.companyOptions
+    }
+  }
+
   const [values, setValues] = useState<Record<string, string>>(
     Object.fromEntries(questions.map((q) => [q.field_key, q.answer || '']))
   )
+
+  // Track which fields with options are in "autre" free-text mode
+  const [autreFields, setAutreFields] = useState<Set<string>>(() => {
+    const set = new Set<string>()
+    for (const q of questions) {
+      const opts = fieldOptionsMap[q.field_key]
+      if (opts && q.answer && !opts.some((o) => o.toLowerCase() === q.answer!.toLowerCase())) {
+        set.add(q.field_key)
+      }
+    }
+    return set
+  })
 
   const steps = SCAN_EMOJIS.map((icon, i) => ({ icon, text: t(`scanStep${i}` as Parameters<typeof t>[0]) }))
 
@@ -97,18 +120,31 @@ export function ClarificationForm({ requestId, questions }: Props) {
 
     const { extractedValues } = result
     const filled = new Set<string>()
+    const nextValues = { ...values }
+    const nextAutreFields = new Set(autreFields)
 
-    setValues((prev) => {
-      const next = { ...prev }
-      for (const [key, value] of Object.entries(extractedValues)) {
-        if (value && questions.some((q) => q.field_key === key)) {
-          next[key] = value
-          filled.add(key)
+    for (const [key, value] of Object.entries(extractedValues)) {
+      if (value && questions.some((q) => q.field_key === key)) {
+        const opts = fieldOptionsMap[key]
+        if (opts) {
+          // Try case-insensitive match against known options
+          const match = opts.find((o) => o.toLowerCase() === value.toLowerCase())
+          if (match) {
+            nextValues[key] = match
+            nextAutreFields.delete(key)
+          } else {
+            nextValues[key] = value
+            nextAutreFields.add(key)
+          }
+        } else {
+          nextValues[key] = value
         }
+        filled.add(key)
       }
-      return next
-    })
+    }
 
+    setValues(nextValues)
+    setAutreFields(nextAutreFields)
     setAutoFilledKeys(filled)
 
     // Finish the bar
@@ -256,6 +292,8 @@ export function ClarificationForm({ requestId, questions }: Props) {
           const isAutoFilled = autoFilledKeys.has(q.field_key)
           const value = values[q.field_key] ?? ''
           const label = getFieldLabel(q.field_key, q.question)
+          const opts = fieldOptionsMap[q.field_key]
+          const isAutre = autreFields.has(q.field_key)
 
           return (
             <div key={q.id} className="space-y-1.5">
@@ -270,7 +308,59 @@ export function ClarificationForm({ requestId, questions }: Props) {
                 )}
               </Label>
 
-              {TEXTAREA_KEYS.includes(q.field_key) ? (
+              {opts ? (
+                /* ---- Company picker ---- */
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-2">
+                    {opts.map((company) => {
+                      const isSelected = value === company && !isAutre
+                      return (
+                        <button
+                          key={company}
+                          type="button"
+                          onClick={() => {
+                            setValues((prev) => ({ ...prev, [q.field_key]: company }))
+                            setAutreFields((prev) => { const s = new Set(prev); s.delete(q.field_key); return s })
+                          }}
+                          className={`rounded-full border px-3 py-1 text-sm transition-colors ${
+                            isSelected
+                              ? 'border-gray-900 bg-gray-900 text-white'
+                              : 'border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:text-gray-900'
+                          }`}
+                        >
+                          {company}
+                        </button>
+                      )
+                    })}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAutreFields((prev) => new Set([...prev, q.field_key]))
+                        setValues((prev) => ({ ...prev, [q.field_key]: isAutre ? value : '' }))
+                      }}
+                      className={`rounded-full border px-3 py-1 text-sm transition-colors ${
+                        isAutre
+                          ? 'border-gray-900 bg-gray-900 text-white'
+                          : 'border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:text-gray-900'
+                      }`}
+                    >
+                      {t('autre')}
+                    </button>
+                  </div>
+                  {isAutre && (
+                    <Input
+                      id={q.field_key}
+                      name={q.field_key}
+                      value={value}
+                      onChange={(e) => setValues((prev) => ({ ...prev, [q.field_key]: e.target.value }))}
+                      placeholder={t('autrePlaceholder')}
+                      required={q.is_required}
+                      className={isAutoFilled ? 'border-emerald-200 bg-emerald-50/30' : ''}
+                      autoFocus
+                    />
+                  )}
+                </div>
+              ) : TEXTAREA_KEYS.includes(q.field_key) ? (
                 <Textarea
                   id={q.field_key}
                   name={q.field_key}

@@ -141,7 +141,9 @@
     "scanStep1": "Ricerca delle informazioni...",
     "scanStep2": "Elaborazione in corso...",
     "scanStep3": "Un po' di magia...",
-    "scanStep4": "Quasi pronto!"
+    "scanStep4": "Quasi pronto!",
+    "autre": "Altro",
+    "autrePlaceholder": "Inserisci il nome..."
   },
   "templateBanner": {
     "autoDetected": "rilevato automaticamente",

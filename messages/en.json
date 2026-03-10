@@ -141,7 +141,9 @@
     "scanStep1": "Hunting for the good stuff...",
     "scanStep2": "Making sense of it all...",
     "scanStep3": "Working some magic...",
-    "scanStep4": "Almost there!"
+    "scanStep4": "Almost there!",
+    "autre": "Other",
+    "autrePlaceholder": "Enter the name..."
   },
   "templateBanner": {
     "autoDetected": "auto-detected",

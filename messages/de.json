@@ -141,7 +141,9 @@
     "scanStep1": "Infos werden gesucht...",
     "scanStep2": "Alles wird verarbeitet...",
     "scanStep3": "Etwas Magie passiert gerade...",
-    "scanStep4": "Fast fertig!"
+    "scanStep4": "Fast fertig!",
+    "autre": "Andere",
+    "autrePlaceholder": "Namen eingeben..."
   },
   "templateBanner": {
     "autoDetected": "automatisch erkannt",
