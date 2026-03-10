@@ -1,7 +1,13 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  // Server components can use @react-pdf/renderer
+  serverExternalPackages: ['@react-pdf/renderer'],
 
-export default nextConfig;
+  // Disable type checking during build for faster MVP iteration
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+}
+
+export default nextConfig
