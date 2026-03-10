@@ -1,23 +1,18 @@
 import type { IntentType, ExtractedEntity, QuestionInput } from '@/types'
-import { getTemplate } from '@/lib/templates'
 
 // TODO: replace with Claude API call
 // Ask Claude which questions are still needed given current entities
 export async function generateQuestions(
   entities: ExtractedEntity[],
   intent: IntentType,
-  templateKey?: string | null
 ): Promise<QuestionInput[]> {
   await new Promise((r) => setTimeout(r, 400))
 
   const questions: QuestionInput[] = []
   const entityMap = new Map(entities.map((e) => [e.entity_type, e]))
-  const template = getTemplate(templateKey)
-  const overrides = template?.questionOverrides ?? {}
 
-  // Helper: resolve question text, applying template override if present
-  const q = (fieldKey: string, defaultText: string): string =>
-    overrides[fieldKey] ?? defaultText
+  // Helper: resolve question text
+  const q = (_fieldKey: string, defaultText: string): string => defaultText
 
   let index = 0
 

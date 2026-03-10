@@ -39,6 +39,7 @@ export interface Database {
           country?: string
           updated_at?: string
         }
+        Relationships: []
       }
       requests: {
         Row: {
@@ -72,6 +73,7 @@ export interface Database {
           language?: string
           updated_at?: string
         }
+        Relationships: []
       }
       document_uploads: {
         Row: {
@@ -96,6 +98,7 @@ export interface Database {
         Update: {
           ocr_text?: string | null
         }
+        Relationships: []
       }
       extracted_entities: {
         Row: {
@@ -122,8 +125,10 @@ export interface Database {
           value?: string | null
           confidence?: number
           is_verified?: boolean
+          source?: EntitySource
           updated_at?: string
         }
+        Relationships: []
       }
       clarification_questions: {
         Row: {
@@ -150,6 +155,7 @@ export interface Database {
           answer?: string | null
           updated_at?: string
         }
+        Relationships: []
       }
       generated_letters: {
         Row: {
@@ -183,6 +189,7 @@ export interface Database {
           pdf_path?: string | null
           updated_at?: string
         }
+        Relationships: []
       }
       recipients_directory: {
         Row: {
@@ -206,7 +213,93 @@ export interface Database {
           website?: string | null
           category?: string | null
         }
-        Update: never
+        Update: {
+          company_name?: string
+          postal_address?: string | null
+          email?: string | null
+          website?: string | null
+          category?: string | null
+        }
+        Relationships: []
+      }
+      companies: {
+        Row: {
+          id: string
+          name: string
+          normalized_name: string
+          aliases: string[]
+          country_code: string
+          category: string
+          website: string | null
+          logo_url: string | null
+          sort_order: number
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          aliases?: string[]
+          country_code: string
+          category: string
+          website?: string | null
+          logo_url?: string | null
+          sort_order?: number
+          is_active?: boolean
+        }
+        Update: {
+          name?: string
+          aliases?: string[]
+          country_code?: string
+          category?: string
+          website?: string | null
+          logo_url?: string | null
+          sort_order?: number
+          is_active?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      company_contacts: {
+        Row: {
+          id: string
+          company_id: string
+          intent_type: string | null
+          postal_address: string | null
+          email: string | null
+          phone: string | null
+          department: string | null
+          notes: string | null
+          source_url: string | null
+          last_verified_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          company_id: string
+          intent_type?: string | null
+          postal_address?: string | null
+          email?: string | null
+          phone?: string | null
+          department?: string | null
+          notes?: string | null
+          source_url?: string | null
+          last_verified_at?: string | null
+        }
+        Update: {
+          intent_type?: string | null
+          postal_address?: string | null
+          email?: string | null
+          phone?: string | null
+          department?: string | null
+          notes?: string | null
+          source_url?: string | null
+          last_verified_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       attachments_checklists: {
         Row: {
@@ -229,6 +322,7 @@ export interface Database {
         Update: {
           is_provided?: boolean
         }
+        Relationships: []
       }
       activity_history: {
         Row: {
@@ -246,7 +340,10 @@ export interface Database {
           action_type: string
           metadata?: Json | null
         }
-        Update: never
+        Update: {
+          metadata?: Json | null
+        }
+        Relationships: []
       }
       billing_plans: {
         Row: {
@@ -272,7 +369,12 @@ export interface Database {
           letters_used?: number
           letters_limit?: number
         }
+        Relationships: []
       }
     }
+    Views: { [_ in never]: never }
+    Functions: { [_ in never]: never }
+    Enums: { [_ in never]: never }
+    CompositeTypes: { [_ in never]: null }
   }
 }

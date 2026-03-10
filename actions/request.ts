@@ -92,7 +92,7 @@ export async function createRequestFromText(formData: FormData) {
       .select('*')
       .eq('request_id', request.id)
 
-    const questions = await generateQuestions(fullEntities || [], intent, null)
+    const questions = await generateQuestions(fullEntities || [], intent)
 
     if (questions.length > 0) {
       await supabase.from('clarification_questions').insert(

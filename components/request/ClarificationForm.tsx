@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useTranslations, useLocale } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { submitAnswers } from '@/actions/clarify'
 import { extractFromDocumentForClarify } from '@/actions/upload'
 import { getTemplate } from '@/lib/templates'
@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Camera, CheckCircle2, Loader2, Upload } from 'lucide-react'
+import { CheckCircle2, Loader2, Upload } from 'lucide-react'
 import { toast } from 'sonner'
 
 const TEXTAREA_KEYS = ['complaint_description', 'request_details', 'contest_reason', 'expected_resolution']
@@ -26,16 +26,22 @@ const KNOWN_FIELD_KEYS = [
 
 const SCAN_EMOJIS = ['📸', '🔍', '🧠', '🪄', '✨']
 
+interface Company {
+  id: string
+  name: string
+  category: string
+}
+
 interface Props {
   requestId: string
   questions: ClarificationQuestion[]
   templateKey?: string | null
+  companies?: Company[]
 }
 
-export function ClarificationForm({ requestId, questions, templateKey }: Props) {
+export function ClarificationForm({ requestId, questions, templateKey, companies = [] }: Props) {
   const t = useTranslations('form')
   const tFields = useTranslations('fields')
-  const locale = useLocale()
   const [loading, setLoading] = useState(false)
   const [scanning, setScanning] = useState(false)
   const [scanProgress, setScanProgress] = useState(0)
@@ -46,13 +52,15 @@ export function ClarificationForm({ requestId, questions, templateKey }: Props) 
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Build field options map from template definition, locale-aware
+  // Build field options map from DB companies, filtered by companyCategory
   const template = templateKey ? getTemplate(templateKey) : null
   const fieldOptionsMap: Record<string, string[]> = {}
   if (template) {
     for (const f of template.fields) {
-      if (f.companyOptionsByLocale) {
-        fieldOptionsMap[f.key] = f.companyOptionsByLocale[locale] ?? f.companyOptionsByLocale['fr'] ?? []
+      if (f.companyCategory) {
+        fieldOptionsMap[f.key] = companies
+          .filter((c) => c.category === f.companyCategory)
+          .map((c) => c.name)
       }
     }
   }
@@ -226,7 +234,6 @@ export function ClarificationForm({ requestId, questions, templateKey }: Props) 
       {/* Photo upload zone */}
       <div className="rounded-xl border border-gray-200 bg-white p-4">
         <p className="mb-3 text-sm font-medium text-gray-700">
-          <Camera className="mr-1.5 inline h-4 w-4 text-gray-400" />
           {t('photoTitle')}
         </p>
 

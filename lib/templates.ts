@@ -5,7 +5,7 @@ export interface TemplateField {
   question: string     // French — shown in form, used by AI letter generator
   required?: boolean   // default true
   type?: 'text' | 'date' | 'textarea'
-  companyOptionsByLocale?: Partial<Record<string, string[]>>  // locale-keyed choices; falls back to 'fr'
+  companyCategory?: string  // companies.category — drives DB-sourced picker
 }
 
 export interface Template {
@@ -52,17 +52,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon abonnement à ma salle de sport',
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: 'Quel est le nom de votre salle de sport ?',
-        companyOptionsByLocale: {
-          fr: ['Basic-Fit', 'Fitness Park', 'Keep Cool', "L'Orange Bleue", 'Neoness', 'Club Med Gym', 'Gofit'],
-          en: ['PureGym', 'The Gym Group', 'David Lloyd', 'Virgin Active', 'Anytime Fitness', 'Basic-Fit', 'JD Gyms'],
-          de: ['McFit', 'FitX', 'John Reed', 'INJOY', 'Clever Fit', 'FitnessFirst', 'RSG Group'],
-          es: ['Holmes Place', 'Metropolitan', 'VivaGym', 'Anytime Fitness', 'Basic-Fit', 'Supera', 'Go Fit'],
-          it: ['Virgin Active', 'McFit', 'Anytime Fitness', 'Basic-Fit', 'Klab', 'FitnessFirst', 'Technogym Club'],
-        },
-      },
+      { key: 'company_name', question: 'Quel est le nom de votre salle de sport ?', companyCategory: 'gym' },
       { key: 'contract_number', question: 'Avez-vous un numéro de membre ou de contrat ?', required: false },
       { key: 'termination_date', question: 'À quelle date souhaitez-vous résilier ?', type: 'date' },
     ],
@@ -77,17 +67,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon abonnement téléphonique',
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: 'Quel est votre opérateur mobile ?',
-        companyOptionsByLocale: {
-          fr: ['Orange', 'SFR', 'Bouygues Telecom', 'Free Mobile', 'Coriolis', 'Prixtel', 'NRJ Mobile', 'Auchan Telecom'],
-          en: ['EE', 'O2', 'Vodafone', 'Three', 'Sky Mobile', 'Virgin Mobile', 'giffgaff', 'Tesco Mobile'],
-          de: ['Deutsche Telekom', 'Vodafone', 'O2', '1&1', 'congstar', 'Aldi Talk', 'Lidl Connect'],
-          es: ['Movistar', 'Orange', 'Vodafone', 'Jazztel', 'MásMóvil', 'Yoigo', 'Digi', 'Simyo'],
-          it: ['TIM', 'Vodafone', 'Wind Tre', 'Iliad', 'PosteMobile', 'Fastweb', 'CoopVoce'],
-        },
-      },
+      { key: 'company_name', question: 'Quel est votre opérateur mobile ?', companyCategory: 'telecom_mobile' },
       { key: 'contract_number', question: 'Quel est votre numéro de client ou de ligne ?' },
       { key: 'termination_date', question: 'À quelle date souhaitez-vous résilier ?', type: 'date' },
     ],
@@ -121,17 +101,7 @@ export const TEMPLATES: Template[] = [
     description: "Mon colis n'est pas arrivé et je demande un remboursement ou un réenvoi",
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: 'Chez quel vendeur ou transporteur avez-vous commandé ?',
-        companyOptionsByLocale: {
-          fr: ['Amazon', 'Cdiscount', 'Vinted', 'Leboncoin', 'La Poste / Colissimo', 'Chronopost', 'DHL', 'UPS', 'DPD', 'GLS'],
-          en: ['Amazon', 'eBay', 'ASOS', 'Royal Mail', 'Evri', 'DHL', 'DPD', 'UPS', 'FedEx', 'Yodel'],
-          de: ['Amazon', 'Otto', 'Zalando', 'DHL', 'Hermes', 'DPD', 'UPS', 'FedEx', 'GLS'],
-          es: ['Amazon', 'El Corte Inglés', 'Zara', 'Correos', 'DHL', 'SEUR', 'MRW', 'GLS'],
-          it: ['Amazon', 'eBay', 'Vinted', 'Poste Italiane', 'DHL', 'BRT', 'GLS', 'SDA'],
-        },
-      },
+      { key: 'company_name', question: 'Chez quel vendeur ou transporteur avez-vous commandé ?', companyCategory: 'logistics' },
       { key: 'complaint_description', question: 'Décrivez le problème : numéro de commande, date de livraison prévue, suivi du colis si disponible.', type: 'textarea' },
       { key: 'expected_resolution', question: 'Que souhaitez-vous : remboursement complet, réenvoi du colis, ou autre ?' },
     ],
@@ -160,17 +130,7 @@ export const TEMPLATES: Template[] = [
     description: "Je veux résilier mon assurance habitation",
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: "Quel est le nom de votre assureur ?",
-        companyOptionsByLocale: {
-          fr: ['AXA', 'MAIF', 'Groupama', 'Allianz', 'GMF', 'MAAF', 'Generali', 'Macif', 'April', 'Covéa'],
-          en: ['Aviva', 'AXA', 'Direct Line', 'Admiral', 'LV=', 'Nationwide', 'Halifax', 'Allianz'],
-          de: ['Allianz', 'AXA', 'Generali', 'HUK-COBURG', 'ERGO', 'Zurich', 'Gothaer', 'R+V'],
-          es: ['Mapfre', 'AXA', 'Allianz', 'Generali', 'Zurich', 'Mutua Madrileña', 'Santalucía'],
-          it: ['Generali', 'UnipolSai', 'Allianz', 'AXA', 'Zurich', 'Cattolica', 'Reale Mutua'],
-        },
-      },
+      { key: 'company_name', question: "Quel est le nom de votre assureur ?", companyCategory: 'insurance_home' },
       { key: 'contract_number', question: "Quel est votre numéro de contrat d'assurance ?" },
       { key: 'termination_date', question: "Quelle est la date d'échéance de votre contrat ?", type: 'date' },
     ],
@@ -206,17 +166,7 @@ export const TEMPLATES: Template[] = [
     description: "J'ai subi un retard ou une annulation de transport et je veux une compensation",
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: 'Quel est le transporteur (SNCF, Air France, compagnie de bus…) ?',
-        companyOptionsByLocale: {
-          fr: ['SNCF', 'Air France', 'Transavia', 'Vueling', 'EasyJet', 'Ryanair', 'RATP', 'Flixbus', 'BlaBlaCar'],
-          en: ['National Rail', 'British Airways', 'EasyJet', 'Ryanair', 'Virgin Atlantic', 'Trainline', 'Flixbus', 'Eurostar'],
-          de: ['Deutsche Bahn', 'Lufthansa', 'Eurowings', 'Ryanair', 'EasyJet', 'Flixbus', 'ÖPNV'],
-          es: ['Renfe', 'Iberia', 'Vueling', 'Ryanair', 'EasyJet', 'Alsa', 'Avlo', 'Flixbus'],
-          it: ['Trenitalia', 'Italo', 'ITA Airways', 'Ryanair', 'EasyJet', 'Vueling', 'Flixbus'],
-        },
-      },
+      { key: 'company_name', question: 'Quel est le transporteur (SNCF, Air France, compagnie de bus…) ?', companyCategory: 'transport' },
       { key: 'complaint_description', question: "Décrivez le problème : n° de billet, trajet, date, durée du retard ou motif d'annulation.", type: 'textarea' },
       { key: 'expected_resolution', question: 'Que souhaitez-vous : remboursement du billet, avoir, ou indemnisation complémentaire ?' },
     ],
@@ -231,17 +181,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon abonnement box internet ou TV',
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: 'Quel est votre fournisseur (Orange, Free, SFR…) ?',
-        companyOptionsByLocale: {
-          fr: ['Orange', 'Free', 'SFR', 'Bouygues Telecom', 'RED by SFR', 'Sosh', 'B&You'],
-          en: ['BT', 'Sky', 'Virgin Media', 'TalkTalk', 'Plusnet', 'EE Broadband', 'NOW TV'],
-          de: ['Deutsche Telekom', 'Vodafone', '1&1', 'O2', 'Unitymedia', 'Freenet'],
-          es: ['Movistar', 'Orange', 'Vodafone', 'Jazztel', 'MásMóvil', 'Digi'],
-          it: ['TIM', 'Vodafone', 'Wind Tre', 'Fastweb', 'Iliad', 'Sky Italia'],
-        },
-      },
+      { key: 'company_name', question: 'Quel est votre fournisseur (Orange, Free, SFR…) ?', companyCategory: 'telecom_internet' },
       { key: 'contract_number', question: 'Quel est votre numéro de client ?' },
     ],
   },
@@ -255,17 +195,7 @@ export const TEMPLATES: Template[] = [
     description: "Je veux résilier mon assurance automobile",
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: "Quel est le nom de votre assureur auto ?",
-        companyOptionsByLocale: {
-          fr: ['AXA', 'MAIF', 'Groupama', 'Allianz', 'GMF', 'MAAF', 'Generali', 'Macif', 'April', 'Direct Assurance'],
-          en: ['Aviva', 'AXA', 'Direct Line', 'Admiral', 'LV=', 'Churchill', 'Hastings Direct', 'Allianz'],
-          de: ['Allianz', 'AXA', 'HUK-COBURG', 'ADAC', 'ERGO', 'Zurich', 'Gothaer'],
-          es: ['Mapfre', 'Mutua Madrileña', 'AXA', 'Allianz', 'Generali', 'Zurich', 'Direct Seguros'],
-          it: ['Generali', 'UnipolSai', 'Allianz', 'AXA', 'Zurich', 'Cattolica', 'Reale Mutua'],
-        },
-      },
+      { key: 'company_name', question: "Quel est le nom de votre assureur auto ?", companyCategory: 'insurance_car' },
       { key: 'contract_number', question: "Quel est votre numéro de contrat ?" },
       { key: 'termination_date', question: "À quelle date souhaitez-vous résilier (ex: date d'anniversaire) ?", type: 'date' },
     ],
@@ -280,17 +210,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon abonnement à un service de streaming',
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: 'Quel service souhaitez-vous résilier ?',
-        companyOptionsByLocale: {
-          fr: ['Netflix', 'Disney+', 'Amazon Prime Video', 'Canal+', 'Apple TV+', 'Spotify', 'Deezer', 'Paramount+', 'MAX', 'OCS'],
-          en: ['Netflix', 'Disney+', 'Amazon Prime Video', 'Apple TV+', 'Spotify', 'NOW TV', 'BritBox', 'Paramount+', 'DAZN'],
-          de: ['Netflix', 'Disney+', 'Amazon Prime Video', 'Apple TV+', 'Spotify', 'Joyn+', 'MagentaTV', 'DAZN'],
-          es: ['Netflix', 'Disney+', 'Amazon Prime Video', 'Apple TV+', 'Spotify', 'Filmin', 'Movistar+', 'DAZN'],
-          it: ['Netflix', 'Disney+', 'Amazon Prime Video', 'Apple TV+', 'Spotify', 'Paramount+', 'DAZN', 'Mediaset Infinity'],
-        },
-      },
+      { key: 'company_name', question: 'Quel service souhaitez-vous résilier ?', companyCategory: 'streaming' },
       { key: 'contract_number', question: "Avez-vous un numéro d'abonné ou l'email du compte ?", required: false },
     ],
   },
@@ -304,17 +224,7 @@ export const TEMPLATES: Template[] = [
     description: 'Je veux résilier mon contrat de mutuelle santé',
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: 'Quel est le nom de votre mutuelle ?',
-        companyOptionsByLocale: {
-          fr: ['Harmonie Mutuelle', 'Malakoff Humanis', 'Alan', 'MAIF Santé', 'April Santé', 'AXA Santé', 'Henner', 'Mutex'],
-          en: ['BUPA', 'AXA Health', 'Vitality', 'Aviva', 'Cigna', 'Simply Health', 'WPA'],
-          de: ['TK', 'AOK', 'Barmer', 'DAK', 'KKH', 'IKK', 'Allianz Gesundheit'],
-          es: ['Sanitas', 'Adeslas', 'Asisa', 'Mapfre Salud', 'AXA Salud', 'DKV'],
-          it: ['UniSalute', 'Generali', 'Blue Assistance', 'Previmedical', 'Filo Diretto'],
-        },
-      },
+      { key: 'company_name', question: 'Quel est le nom de votre mutuelle ?', companyCategory: 'health_insurance' },
       { key: 'contract_number', question: "Quel est votre numéro d'adhérent ?" },
       { key: 'termination_date', question: "Quelle est la date d'échéance annuelle de votre contrat ?", type: 'date' },
     ],
@@ -329,17 +239,7 @@ export const TEMPLATES: Template[] = [
     description: "Je conteste des frais bancaires injustifiés prélevés sur mon compte",
     fields: [
       ...SENDER_FIELDS,
-      {
-        key: 'company_name',
-        question: 'Quel est le nom de votre banque ?',
-        companyOptionsByLocale: {
-          fr: ['BNP Paribas', 'Société Générale', 'Crédit Agricole', 'LCL', "Caisse d'Épargne", 'Banque Populaire', 'La Banque Postale', 'Boursorama', 'N26', 'Revolut'],
-          en: ['Barclays', 'HSBC', 'Lloyds', 'NatWest', 'Santander', 'Halifax', 'Monzo', 'Starling', 'Revolut', 'Nationwide'],
-          de: ['Deutsche Bank', 'Commerzbank', 'Sparkasse', 'DKB', 'ING', 'Comdirect', 'N26', 'Revolut'],
-          es: ['BBVA', 'Santander', 'CaixaBank', 'Bankinter', 'Sabadell', 'ING España', 'Openbank', 'N26'],
-          it: ['Intesa Sanpaolo', 'UniCredit', 'Banco BPM', 'Mediolanum', 'Fineco', 'N26', 'Revolut'],
-        },
-      },
+      { key: 'company_name', question: 'Quel est le nom de votre banque ?', companyCategory: 'bank' },
       { key: 'contest_reason', question: 'Quels frais contestez-vous et pour quel motif ? (ex: frais de virement, commission, débit non autorisé…)', type: 'textarea' },
     ],
   },

@@ -1,5 +1,12 @@
-import type { Recipient } from '@/types'
 import { MapPin, Mail, Globe, Building2 } from 'lucide-react'
+
+interface Recipient {
+  company_name: string
+  category?: string | null
+  postal_address?: string | null
+  email?: string | null
+  website?: string | null
+}
 
 interface Props {
   recipient: Recipient

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ClarificationForm } from '@/components/request/ClarificationForm'
 import { TemplateBanner } from '@/components/request/TemplateBanner'
 import { ArrowLeft } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getLocale } from 'next-intl/server'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -17,7 +17,10 @@ export default async function ClarifyPage({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return notFound()
 
-  const t = await getTranslations('clarify')
+  const [t, locale] = await Promise.all([
+    getTranslations('clarify'),
+    getLocale(),
+  ])
 
   const { data: request } = await supabase
     .from('requests')
@@ -28,11 +31,19 @@ export default async function ClarifyPage({ params }: Props) {
 
   if (!request) return notFound()
 
-  const { data: questions } = await supabase
-    .from('clarification_questions')
-    .select('*')
-    .eq('request_id', id)
-    .order('order_index')
+  const [{ data: questions }, { data: companies }] = await Promise.all([
+    supabase
+      .from('clarification_questions')
+      .select('*')
+      .eq('request_id', id)
+      .order('order_index'),
+    supabase
+      .from('companies')
+      .select('id, name, category')
+      .eq('country_code', locale)
+      .eq('is_active', true)
+      .order('sort_order'),
+  ])
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -68,6 +79,7 @@ export default async function ClarifyPage({ params }: Props) {
         requestId={id}
         questions={questions || []}
         templateKey={request.template_key ?? null}
+        companies={companies ?? []}
       />
     </div>
   )

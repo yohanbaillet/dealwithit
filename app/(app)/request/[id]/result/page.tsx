@@ -44,32 +44,64 @@ export default async function ResultPage({ params }: Props) {
     supabase.from('attachments_checklists').select('*').eq('request_id', id),
   ])
 
-  // Find recipient — auto-detect fine authority or company lookup
+  // Find recipient from companies + company_contacts
   const fineTypeEntity = (entities || []).find((e) => e.entity_type === 'fine_type')
   const companyEntity = (entities || []).find((e) => e.entity_type === 'company_name')
 
-  let recipientLookupName: string | null = null
-  if (fineTypeEntity?.value && request.intent_type === 'contest') {
-    if (fineTypeEntity.value === 'radar') {
-      recipientLookupName = 'ANTAI'
-    } else if (fineTypeEntity.value === 'stationnement') {
-      recipientLookupName = 'Service FPS'
-    } else {
-      recipientLookupName = 'Officier du Ministère Public'
-    }
-  } else if (companyEntity?.value) {
-    recipientLookupName = companyEntity.value
-  }
+  // Prefer the clarification answer (user-confirmed) over extracted entity
+  const { data: clarifyAnswers } = await supabase
+    .from('clarification_questions')
+    .select('field_key, answer')
+    .eq('request_id', id)
+  const companyAnswer = clarifyAnswers?.find((q) => q.field_key === 'company_name')?.answer
 
-  let recipient = null
-  if (recipientLookupName) {
-    const { data: rec } = await supabase
-      .from('recipients_directory')
-      .select('*')
-      .ilike('company_name', `%${recipientLookupName}%`)
+  const companyNameRaw = companyAnswer || companyEntity?.value || null
+
+  let recipient: {
+    company_name: string
+    category: string | null
+    website: string | null
+    postal_address: string | null
+    email: string | null
+  } | null = null
+
+  if (companyNameRaw) {
+    const normalized = companyNameRaw.toLowerCase().trim()
+    const { data: company } = await supabase
+      .from('companies')
+      .select('id, name, category, website')
+      .or(`normalized_name.eq.${normalized},normalized_name.ilike.%${normalized}%`)
+      .eq('is_active', true)
       .limit(1)
-      .single()
-    recipient = rec
+      .maybeSingle()
+
+    if (company) {
+      // Prefer contact matching the request intent, fall back to generic (null)
+      const { data: specificContact } = await supabase
+        .from('company_contacts')
+        .select('postal_address, email')
+        .eq('company_id', company.id)
+        .eq('intent_type', request.intent_type ?? '')
+        .maybeSingle()
+
+      const contact = specificContact ?? await (async () => {
+        const { data } = await supabase
+          .from('company_contacts')
+          .select('postal_address, email')
+          .eq('company_id', company.id)
+          .is('intent_type', null)
+          .maybeSingle()
+        return data
+      })()
+
+      recipient = {
+        company_name: company.name,
+        category: company.category,
+        website: company.website,
+        postal_address: contact?.postal_address ?? null,
+        email: contact?.email ?? null,
+      }
+    }
   }
 
   const fineType = fineTypeEntity?.value || null
