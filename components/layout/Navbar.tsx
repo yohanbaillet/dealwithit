@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { LogOut, LayoutDashboard } from 'lucide-react'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { LogOut, LayoutDashboard, ChevronDown } from 'lucide-react'
 import { setLocale } from '@/actions/locale'
 import type { Locale } from '@/i18n/request'
 
@@ -51,24 +52,25 @@ export function Navbar({ userEmail }: NavbarProps) {
 
         <div className="flex items-center gap-2">
           {/* Language selector */}
-          <div className="flex items-center gap-0.5 border-r border-gray-100 pr-2 mr-1">
-            {LOCALES.map((l) => (
-              <button
-                key={l.code}
-                type="button"
-                onClick={() => setLocale(l.code)}
-                className={`flex items-center gap-1 rounded-md px-1.5 py-1 text-xs font-medium transition-colors ${
-                  locale === l.code
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-400 hover:bg-gray-100 hover:text-gray-700'
-                }`}
-                aria-label={l.label}
-              >
-                <span>{l.flag}</span>
-                <span className="hidden sm:inline">{l.label}</span>
-              </button>
-            ))}
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+              <span>{LOCALES.find((l) => l.code === locale)?.flag}</span>
+              <span className="hidden sm:inline text-xs font-medium">{locale.toUpperCase()}</span>
+              <ChevronDown className="h-3 w-3 text-gray-400" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="min-w-[120px]">
+              {LOCALES.map((l) => (
+                <DropdownMenuItem
+                  key={l.code}
+                  onClick={() => setLocale(l.code)}
+                  className={`gap-2 cursor-pointer ${locale === l.code ? 'font-semibold' : ''}`}
+                >
+                  <span>{l.flag}</span>
+                  <span>{l.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {userEmail ? (
             <>
