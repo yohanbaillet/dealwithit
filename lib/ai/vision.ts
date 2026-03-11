@@ -38,7 +38,9 @@ Réponds UNIQUEMENT avec un objet JSON valide ayant cette structure exacte :
     "fine_amount": "montant de l'amende ou de la pénalité (ex: '135€')",
     "vehicle_plate": "numéro d'immatriculation du véhicule",
     "offense_date": "date de l'infraction ou de l'amende au format YYYY-MM-DD",
-    "offense_city": "ville ou commune de l'infraction"
+    "offense_city": "ville ou commune de l'infraction",
+    "order_number": "numéro de commande, référence de commande ou numéro de colis/tracking",
+    "parcel_name": "nom ou description du produit commandé / contenu du colis"
   }
 }
 

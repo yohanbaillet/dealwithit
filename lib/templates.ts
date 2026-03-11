@@ -102,7 +102,9 @@ export const TEMPLATES: Template[] = [
     fields: [
       ...SENDER_FIELDS,
       { key: 'company_name', question: 'Chez quel vendeur ou transporteur avez-vous commandé ?', companyCategory: 'logistics' },
-      { key: 'complaint_description', question: 'Décrivez le problème : numéro de commande, date de livraison prévue, suivi du colis si disponible.', type: 'textarea' },
+      { key: 'order_number', question: 'Quel est le numéro de commande ?' },
+      { key: 'parcel_name', question: 'Quel est le nom ou la description du colis (ex: "écouteurs sans fil", "robe bleue taille M") ?' },
+      { key: 'complaint_description', question: 'Décrivez le problème : date de livraison prévue, numéro de suivi si disponible.', type: 'textarea' },
       { key: 'expected_resolution', question: 'Que souhaitez-vous : remboursement complet, réenvoi du colis, ou autre ?' },
     ],
   },
