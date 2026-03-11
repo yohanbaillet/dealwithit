@@ -54,7 +54,7 @@ export function ExampleCards() {
   }
 
   return (
-    <section id="templates" className="min-h-[calc(100vh-64px)] bg-gray-50 px-4 py-16">
+    <section id="templates" className="bg-gray-50 px-4 py-16">
       <div className="mx-auto max-w-4xl">
         <div className="mb-10 text-center">
           <h1 className="mb-3 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
