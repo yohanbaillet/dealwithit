@@ -64,8 +64,8 @@ create index on company_contacts(company_id, intent_type);
 -- ── updated_at triggers ──────────────────────────────────────
 create trigger companies_updated_at
   before update on companies
-  for each row execute function update_updated_at_column();
+  for each row execute function handle_updated_at();
 
 create trigger company_contacts_updated_at
   before update on company_contacts
-  for each row execute function update_updated_at_column();
+  for each row execute function handle_updated_at();

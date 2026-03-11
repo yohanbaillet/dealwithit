@@ -416,7 +416,7 @@ insert into companies (name, country_code, category, sort_order, website) values
   ('Cdiscount',           'fr', 'logistics', 2, 'https://www.cdiscount.com'),
   ('Vinted',              'fr', 'logistics', 3, 'https://www.vinted.fr'),
   ('Leboncoin',           'fr', 'logistics', 4, 'https://www.leboncoin.fr'),
-  ('La Poste / Colissimo','fr', 'logistics', 5, 'https://www.laposte.fr', ARRAY['La Poste', 'Colissimo']),
+  ('La Poste / Colissimo','fr', 'logistics', 5, 'https://www.laposte.fr'),
   ('Chronopost',          'fr', 'logistics', 6, 'https://www.chronopost.fr'),
   ('DHL',                 'fr', 'logistics', 7, 'https://www.dhl.fr'),
   ('UPS',                 'fr', 'logistics', 8, 'https://www.ups.com'),
@@ -461,3 +461,7 @@ insert into companies (name, country_code, category, sort_order, website) values
   ('BRT',              'it', 'logistics', 6, 'https://www.brt.it'),
   ('GLS',              'it', 'logistics', 7, 'https://gls-group.com'),
   ('SDA',              'it', 'logistics', 8, 'https://www.sda.it');
+
+-- Set aliases that couldn't be inlined above (column mismatch in bulk insert)
+update companies set aliases = ARRAY['La Poste', 'Colissimo']
+where name = 'La Poste / Colissimo' and country_code = 'fr' and category = 'logistics';
