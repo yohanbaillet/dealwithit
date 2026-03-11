@@ -35,27 +35,34 @@ export default getRequestConfig(async () => {
   const cookieStore = await cookies()
   const headerStore = await headers()
 
-  // 1. Explicit user preference (cookie)
+  // 1. Middleware-detected locale (set per-request by middleware.ts — most reliable)
+  const middlewareLocale = headerStore.get('x-locale')
+  if (middlewareLocale && SUPPORTED_LOCALES.includes(middlewareLocale as Locale)) {
+    const locale = middlewareLocale as Locale
+    return { locale, messages: (await import(`../messages/${locale}.json`)).default }
+  }
+
+  // 2. Explicit user preference (cookie) — fallback if middleware didn't run
   const cookieLocale = cookieStore.get('NEXT_LOCALE')?.value
   if (SUPPORTED_LOCALES.includes(cookieLocale as Locale)) {
     const locale = cookieLocale as Locale
     return { locale, messages: (await import(`../messages/${locale}.json`)).default }
   }
 
-  // 2. Vercel IP geolocation (production — set automatically per request)
+  // 3. Vercel IP geolocation
   const country = headerStore.get('x-vercel-ip-country')?.toUpperCase()
   const countryLocale = country ? COUNTRY_LOCALE_MAP[country] : null
   if (countryLocale) {
     return { locale: countryLocale, messages: (await import(`../messages/${countryLocale}.json`)).default }
   }
 
-  // 3. Browser Accept-Language header (works in local dev too)
+  // 4. Browser Accept-Language
   const acceptLocale = localeFromAcceptLanguage(headerStore.get('accept-language'))
   if (acceptLocale) {
     return { locale: acceptLocale, messages: (await import(`../messages/${acceptLocale}.json`)).default }
   }
 
-  // 4. Default
+  // 5. Default
   return {
     locale: DEFAULT_LOCALE,
     messages: (await import(`../messages/${DEFAULT_LOCALE}.json`)).default,
